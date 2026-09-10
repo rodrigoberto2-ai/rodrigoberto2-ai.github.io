@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rodrigo Pinheiro Berto — Portfolio</title>
+<meta name="description" content="Casos de trabajo con SQL, ETL, Power BI, DAX y Power Query — Data Analyst / BI, Madrid.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F4F5F3;
+    --surface:#FFFFFF;
+    --surface-2:#EEF0ED;
+    --ink:#1B1F1C;
+    --ink-soft:#565F5A;
+    --ink-faint:#8B948E;
+    --accent:#3B6E52;
+    --accent-ink:#2A4F3B;
+    --accent-soft:#E1EBE3;
+    --line:#DDE2DD;
+    --shadow: 0 1px 2px rgba(20,25,22,.04), 0 8px 24px rgba(20,25,22,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12140F;
+      --surface:#191C15;
+      --surface-2:#20241B;
+      --ink:#EBEEE7;
+      --ink-soft:#A6AEA1;
+      --ink-faint:#707A6C;
+      --accent:#7BB894;
+      --accent-ink:#A6D4B8;
+      --accent-soft:#20301F;
+      --line:#2C332A;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12140F; --surface:#191C15; --surface-2:#20241B;
+    --ink:#EBEEE7; --ink-soft:#A6AEA1; --ink-faint:#707A6C;
+    --accent:#7BB894; --accent-ink:#A6D4B8; --accent-soft:#20301F;
+    --line:#2C332A; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", ui-sans-serif, sans-serif; line-height:1.55; }
+  .page{ max-width:880px; margin:0 auto; padding:40px 22px 70px; display:flex; flex-direction:column; gap:34px; }
+  h1,h2{ font-family:"Source Serif 4", Georgia, serif; margin:0; text-wrap:balance; }
+
+  .masthead{ display:flex; flex-direction:column; gap:6px; }
+  .masthead h1{ font-size:32px; font-weight:700; }
+  .masthead .role{ font-family:"IBM Plex Mono", monospace; font-size:13px; color:var(--accent-ink); letter-spacing:.02em; }
+  .masthead p{ margin:4px 0 0; color:var(--ink-soft); font-size:14.5px; max-width:62ch; }
+  .contact{ display:flex; flex-wrap:wrap; gap:14px; margin-top:6px; font-size:13px; color:var(--ink-soft); }
+  .contact a{ color:var(--accent-ink); text-decoration:none; border-bottom:1px solid var(--accent-soft); }
+  .contact a:hover{ border-color:var(--accent); }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:4px; }
+  .section-head h2{ font-size:19px; font-weight:600; }
+  .section-note{ font-size:13px; color:var(--ink-soft); margin-top:-16px; }
+
+  .projects{ display:flex; flex-direction:column; gap:18px; }
+  .project{ background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; display:grid; grid-template-columns:220px 1fr; }
+  .project img{ width:100%; height:100%; object-fit:cover; display:block; border-right:1px solid var(--line); background:var(--surface-2); }
+  .project-body{ padding:16px 18px; display:flex; flex-direction:column; gap:8px; }
+  .project-tag{ font-family:"IBM Plex Mono", monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-ink); background:var(--accent-soft); border-radius:4px; padding:2px 7px; align-self:flex-start; }
+  .project h3{ font-family:"Source Sans 3", sans-serif; font-size:16.5px; font-weight:700; margin:0; }
+  .project p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
+  .project-links{ display:flex; gap:14px; margin-top:4px; font-size:12.5px; }
+  .project-links a{ color:var(--accent-ink); text-decoration:none; font-weight:600; }
+  .project-links a:hover{ text-decoration:underline; }
+
+  .placeholder{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; border:1px dashed var(--line); border-radius:10px; padding:26px; color:var(--ink-faint); font-size:13px; text-align:center; }
+
+  .skills{ display:flex; flex-wrap:wrap; gap:7px; }
+  .skill{ font-family:"IBM Plex Mono", monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:5px; padding:4px 9px; color:var(--ink); }
+
+  footer{ text-align:center; font-size:12px; color:var(--ink-faint); }
+
+  @media (max-width:560px){
+    .project{ grid-template-columns:1fr; }
+    .project img{ border-right:none; border-bottom:1px solid var(--line); max-height:160px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <h1>Rodrigo Pinheiro Berto</h1>
+    <div class="role">Data Analyst · Business Intelligence · SQL</div>
+    <p>Casos de trabajo con SQL, ETL, Power BI y modelado de datos — construidos a partir de mi experiencia real (Falavinha Next, Renault Group, Hecke Import, UNINTER), con datos sintéticos donde no puedo compartir información de clientes reales.</p>
+    <div class="contact">
+      <span>Madrid, España</span>
+      <a href="mailto:rodrigoberto2@gmail.com">rodrigoberto2@gmail.com</a>
+      <span>+34 614 650 517</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Casos de trabajo</h2></div>
+    <p class="section-note">Cada caso incluye el enfoque técnico detrás del resultado visual — no solo la imagen final.</p>
+  </div>
+
+  <div class="projects">
+
+    <div class="project">
+      <img src="images/dashboard-retail.png" alt="Dashboard de analítica de stock y demanda">
+      <div class="project-body">
+        <span class="project-tag">Power BI · Pipelines ETL</span>
+        <h3>Analítica de Stock y Demanda (Retail)</h3>
+        <p>Dashboard de rotación de stock, riesgo de rotura por categoría y precisión de previsión de demanda, junto con el diagrama de arquitectura del pipeline que lo alimenta — extracción incremental, staging y una puerta de calidad de datos antes de llegar al warehouse.</p>
+      </div>
+    </div>
+
+    <div class="project">
+      <img src="images/pipeline-datos.png" alt="Diagrama de arquitectura de pipeline de datos">
+      <div class="project-body">
+        <span class="project-tag">Arquitectura de Datos · Calidad</span>
+        <h3>Pipeline de Datos con Puerta de Calidad</h3>
+        <p>De sistemas fuente a warehouse: ingesta incremental, staging, validación (nulos, duplicados, tipos, reconciliación) y cola de reintentos para lo que falla — en vez de dejar que un dato malo llegue silenciosamente al dashboard.</p>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="placeholder" style="width:100%;">Vista previa<br>interactiva</div>
+      <div class="project-body">
+        <span class="project-tag">Power BI · DAX · Modelo Semántico</span>
+        <h3>Cuadro de Mando — Cartera de Crédito</h3>
+        <p>Dashboard interactivo (filtro por región, tooltips) para un contexto de banca/crédito, con el modelo en estrella y las medidas DAX detrás — SUM, CALCULATE, DIVIDE, SAMEPERIODLASTYEAR.</p>
+        <div class="project-links">
+          <a href="cases/cartera-credito.html">Abrir caso interactivo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="placeholder" style="width:100%;">Vista previa<br>interactiva</div>
+      <div class="project-body">
+        <span class="project-tag">Power BI · DAX · Time Intelligence</span>
+        <h3>Cuadro de Mando — Rendimiento Comercial</h3>
+        <p>Dashboard interactivo (filtro por vendedor, ranking con barras de progreso) con medidas DAX de inteligencia de tiempo — TOTALYTD, SAMEPERIODLASTYEAR — para seguimiento de ventas y objetivos.</p>
+        <div class="project-links">
+          <a href="cases/rendimiento-comercial.html">Abrir caso interactivo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="placeholder" style="width:100%;">Vista previa<br>interactiva</div>
+      <div class="project-body">
+        <span class="project-tag">Power Query · Modelado M</span>
+        <h3>Consolidación Multi-Sucursal</h3>
+        <p>Consulta de Power Query que combina y limpia archivos de ventas de distintas sucursales (nombres inconsistentes, fechas en formatos distintos) en una tabla única lista para el modelo — con el código M y los pasos aplicados a la vista.</p>
+        <div class="project-links">
+          <a href="cases/consolidacion-multisucursal.html">Abrir caso interactivo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="placeholder" style="width:100%;">Vista previa<br>interactiva</div>
+      <div class="project-body">
+        <span class="project-tag">DAX · Optimización</span>
+        <h3>Auditoría de Rendimiento DAX</h3>
+        <p>Diagnóstico con el analizador de rendimiento de Power BI y reescritura de una medida lenta (de FILTER+ALL a RANKX+ALLSELECTED) para bajar el tiempo de refresco de 8.4s a 0.7s — con el antes/después del código.</p>
+        <div class="project-links">
+          <a href="cases/auditoria-rendimiento-dax.html">Abrir caso interactivo →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Habilidades</h2></div>
+  </div>
+  <div class="skills">
+    <span class="skill">SQL avanzado (CTEs, JOINs, optimización)</span>
+    <span class="skill">Power BI (DAX, Power Query)</span>
+    <span class="skill">AWS Redshift</span>
+    <span class="skill">Google BigQuery</span>
+    <span class="skill">Python (ETL, automatización)</span>
+    <span class="skill">Tableau</span>
+    <span class="skill">Qlik Sense</span>
+    <span class="skill">SQL Server</span>
+  </div>
+
+  <footer>Todos los casos usan datos sintéticos, construidos para mostrar el enfoque técnico — no proceden de ningún cliente real.</footer>
+
+</div>
+</body>
+</html>

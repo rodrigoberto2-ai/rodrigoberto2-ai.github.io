@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auditoría de Rendimiento DAX · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1F1EF; --surface:#FFFFFF; --surface-2:#F6F6F4;
+    --ink:#211E1A; --ink-soft:#61594F; --ink-faint:#968A78;
+    --accent:#9A5B1E; --accent-ink:#7A4715; --accent-soft:#F1E2CE;
+    --line:#E1DDD3; --good:#3E8A5C; --warn:#B4790E; --bad:#C13B3B;
+    --shadow: 0 1px 2px rgba(20,16,10,.05), 0 4px 14px rgba(20,16,10,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#171310; --surface:#1E1A15; --surface-2:#241F19;
+      --ink:#EDE8DF; --ink-soft:#AB9F8C; --ink-faint:#786C5A;
+      --accent:#D89A55; --accent-ink:#E8B87A; --accent-soft:#2E2417;
+      --line:#332C22; --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#171310; --surface:#1E1A15; --surface-2:#241F19;
+    --ink:#EDE8DF; --ink-soft:#AB9F8C; --ink-faint:#786C5A;
+    --accent:#D89A55; --accent-ink:#E8B87A; --accent-soft:#2E2417;
+    --line:#332C22; --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  .page{ max-width:980px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
+  h1,h2,h3{ font-family:"Source Sans 3","Segoe UI",sans-serif; font-weight:700; margin:0; text-wrap:balance; }
+
+  .back{ font-size:12.5px; color:var(--accent-ink); text-decoration:none; font-weight:600; }
+  .back:hover{ text-decoration:underline; }
+
+  .masthead{ display:flex; flex-direction:column; gap:3px; }
+  .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-size:24px; }
+  .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:70ch; }
+
+  .kpi-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .kpi{ background:var(--surface); padding:12px 14px; display:flex; flex-direction:column; gap:2px; border-left:3px solid var(--accent); }
+  .kpi.good{ border-left-color:var(--good); }
+  .kpi .lbl{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em; }
+  .kpi .val{ font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .kpi .delta{ font-size:11.5px; font-weight:600; }
+  .kpi .delta.good{ color:var(--good); }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:3px; }
+  .section-head h2{ font-size:17px; font-weight:600; }
+  .section-note{ font-size:12.5px; color:var(--ink-soft); margin-top:-8px; }
+
+  .vs{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .vcard{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; }
+  .vcard .vhead{ padding:8px 14px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; display:flex; justify-content:space-between; align-items:center; }
+  .vcard.slow .vhead{ background:var(--bad); color:#fff; }
+  .vcard.fast .vhead{ background:var(--good); color:#fff; }
+  .vcard .vbody{ padding:12px 14px; }
+  .m-block{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; background:var(--surface-2); border:1px solid var(--line); padding:10px 12px; white-space:pre-wrap; color:var(--ink); line-height:1.6; overflow-x:auto; }
+  .m-block .kw{ color:var(--accent-ink); font-weight:600; }
+  .m-block .cm{ color:var(--ink-faint); }
+  .vcard .note{ font-size:12px; color:var(--ink-soft); margin-top:8px; }
+
+  .timeline{ display:flex; align-items:flex-end; gap:2px; height:70px; padding:0 2px; }
+  .timeline .bar{ flex:1; background:var(--ink-faint); position:relative; }
+  .timeline .bar.dax{ background:var(--accent); }
+  .timeline-wrap{ background:var(--surface); border:1px solid var(--line); padding:12px 14px; }
+  .timeline-legend{ display:flex; gap:16px; font-size:11px; color:var(--ink-soft); margin-top:8px; flex-wrap:wrap; }
+  .timeline-legend span::before{ content:""; display:inline-block; width:8px; height:8px; margin-right:5px; vertical-align:middle; }
+  .timeline-legend .l1::before{ background:var(--ink-faint); }
+  .timeline-legend .l2::before{ background:var(--accent); }
+
+  table.rank{ width:100%; border-collapse:collapse; font-size:12.5px; background:var(--surface); border:1px solid var(--line); }
+  table.rank th{ text-align:left; padding:6px 10px; background:var(--surface-2); border-bottom:1px solid var(--line); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-soft); }
+  table.rank td{ padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; color:var(--ink); }
+  table.rank td.tech{ font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-soft); }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
+  .card h3{ font-size:13px; font-weight:600; margin-bottom:10px; }
+
+  footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
+
+  @media (max-width:680px){
+    .kpi-row{ grid-template-columns:1fr 1fr; }
+    .vs{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Volver al portfolio</a>
+
+  <div class="masthead">
+    <span class="kicker">Portfolio · Caso de BI</span>
+    <h1>Auditoría de Rendimiento de un Modelo DAX</h1>
+    <p>Ejemplo con datos sintéticos — un informe que tardaba más de 8 segundos en refrescar, diagnosticado con el analizador de rendimiento y reescrito hasta bajar de 1 segundo.</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><span class="lbl">Tiempo de consulta (antes)</span><span class="val">8.4 s</span></div>
+    <div class="kpi good"><span class="lbl">Tiempo de consulta (después)</span><span class="val">0.7 s</span><span class="delta good">▾ 92%</span></div>
+    <div class="kpi good"><span class="lbl">Medidas reescritas</span><span class="val">3</span></div>
+    <div class="kpi"><span class="lbl">Filas del modelo</span><span class="val">2.1 M</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Dónde se iba el tiempo</h2></div>
+    <p class="section-note">Motor de fórmulas (DAX) vs. motor de almacenamiento (VertiPaq), por consulta — visto en el analizador de rendimiento de Power BI.</p>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="timeline">
+      <div class="bar dax" style="height:12%"></div>
+      <div class="bar" style="height:8%"></div>
+      <div class="bar dax" style="height:95%" title="Ranking de clientes — Formula Engine: 7.9s"></div>
+      <div class="bar" style="height:10%"></div>
+      <div class="bar dax" style="height:18%"></div>
+      <div class="bar" style="height:9%"></div>
+      <div class="bar dax" style="height:14%"></div>
+      <div class="bar" style="height:7%"></div>
+      <div class="bar dax" style="height:11%"></div>
+      <div class="bar" style="height:6%"></div>
+    </div>
+    <div class="timeline-legend">
+      <span class="l2">Motor de fórmulas (DAX) — el 94% del tiempo total estaba aquí, concentrado en una sola medida</span>
+      <span class="l1">Motor de almacenamiento</span>
+    </div>
+  </div>
+
+  <div class="vs">
+    <div class="vcard slow">
+      <div class="vhead"><span>Antes — 7.9s</span><span>Ranking de Clientes</span></div>
+      <div class="vbody">
+        <div class="m-block"><span class="cm">// Recalcula el ranking completo por cada fila visible en la tabla</span>
+Ranking Cliente =
+<span class="kw">COUNTROWS</span>(
+    <span class="kw">FILTER</span>(
+        <span class="kw">ALL</span>( Clientes ),
+        <span class="kw">CALCULATE</span>( [Ventas Totales] ) &gt; [Ventas Totales]
+    )
+) + 1</div>
+        <p class="note">FILTER sobre ALL(Clientes) fuerza un escaneo fila-por-fila de toda la tabla de clientes, dentro del motor de fórmulas, para cada celda visual. Con 40k clientes y 60 filas visibles, son ~2.4M evaluaciones de contexto.</p>
+      </div>
+    </div>
+    <div class="vcard fast">
+      <div class="vhead"><span>Después — 0.4s</span><span>Ranking de Clientes</span></div>
+      <div class="vbody">
+        <div class="m-block"><span class="cm">// RANKX está optimizado por el motor para este patrón exacto</span>
+Ranking Cliente =
+<span class="kw">RANKX</span>(
+    <span class="kw">ALLSELECTED</span>( Clientes ),
+    [Ventas Totales],
+    ,
+    <span class="kw">DESC</span>,
+    Dense
+)</div>
+        <p class="note">RANKX delega gran parte del trabajo al motor de almacenamiento (VertiPaq) en vez de iterar fila por fila en el motor de fórmulas. ALLSELECTED en vez de ALL respeta los filtros de página/informe pero ignora el filtro de la propia visual — el ranking no colapsa a "1" cuando se filtra una sola fila.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Otras medidas revisadas</h2></div>
+  </div>
+
+  <table class="rank">
+    <thead><tr><th>Medida</th><th>Antes</th><th>Después</th><th>Técnica</th></tr></thead>
+    <tbody>
+      <tr><td>Ranking Cliente</td><td>7.9 s</td><td>0.4 s</td><td class="tech">FILTER(ALL()) → RANKX(ALLSELECTED())</td></tr>
+      <tr><td>Ticket Promedio Ponderado</td><td>0.3 s</td><td>0.1 s</td><td class="tech">SUMX anidado → AVERAGEX directo</td></tr>
+      <tr><td>Clientes Activos (90d)</td><td>0.2 s</td><td>0.1 s</td><td class="tech">DISTINCTCOUNT + FILTER → CALCULATE + KEEPFILTERS</td></tr>
+      <tr><td>Margen %</td><td>&lt;0.1 s</td><td>&lt;0.1 s</td><td class="tech">sin cambios — ya usaba DIVIDE</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <h3>ENFOQUE</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">El primer paso no fue tocar el DAX — fue medir con el analizador de rendimiento para ver cuánto tiempo se iba al motor de fórmulas frente al motor de almacenamiento, y en qué visual exactamente. Una sola medida (el ranking) explicaba el 94% del tiempo total; optimizar las otras tres apenas cambiaba la experiencia del usuario. La regla general aplicada: cuando una medida itera fila por fila sobre una tabla completa (FILTER + ALL), buscar la función nativa equivalente (RANKX, TOPN) que el motor de almacenamiento puede resolver de forma más directa. Los datos y tiempos son sintéticos, construidos para ilustrar el proceso — no proceden de ningún cliente real.</p>
+  </div>
+
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+
+</div>
+</body>
+</html>

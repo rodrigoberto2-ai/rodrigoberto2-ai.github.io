@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuadro de Mando — Cartera de Crédito · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF1F4;
+    --surface:#FFFFFF;
+    --surface-2:#F6F8FA;
+    --ink:#16232E;
+    --ink-soft:#5B6B7A;
+    --ink-faint:#93A1AD;
+    --accent:#1F5C8B;
+    --accent-ink:#164869;
+    --accent-soft:#E4EEF5;
+    --line:#DCE2E7;
+    --good:#1E8A5F;
+    --good-soft:#E1F3EA;
+    --warn:#B4790E;
+    --warn-soft:#FBEED8;
+    --bad:#C13B3B;
+    --bad-soft:#FBE4E2;
+    --shadow: 0 1px 2px rgba(22,35,46,.05), 0 4px 14px rgba(22,35,46,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12181F;
+      --surface:#1B232C;
+      --surface-2:#212A34;
+      --ink:#E7ECF0;
+      --ink-soft:#9FAEBA;
+      --ink-faint:#697885;
+      --accent:#6FAEDA;
+      --accent-ink:#9BC7E6;
+      --accent-soft:#1E3244;
+      --line:#2C3A46;
+      --good:#4FBE8C;
+      --good-soft:#173226;
+      --warn:#E0A93E;
+      --warn-soft:#3A2E14;
+      --bad:#E2726B;
+      --bad-soft:#3B1F1E;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12181F; --surface:#1B232C; --surface-2:#212A34;
+    --ink:#E7ECF0; --ink-soft:#9FAEBA; --ink-faint:#697885;
+    --accent:#6FAEDA; --accent-ink:#9BC7E6; --accent-soft:#1E3244;
+    --line:#2C3A46; --good:#4FBE8C; --good-soft:#173226;
+    --warn:#E0A93E; --warn-soft:#3A2E14; --bad:#E2726B; --bad-soft:#3B1F1E;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  .page{ max-width:980px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
+  h1,h2,h3{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
+
+  .back{ font-size:12.5px; color:var(--accent-ink); text-decoration:none; font-weight:600; }
+  .back:hover{ text-decoration:underline; }
+
+  .masthead{ display:flex; flex-direction:column; gap:3px; }
+  .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-size:24px; font-weight:700; }
+  .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:70ch; }
+
+  .report{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; }
+  .report-bar{ background:var(--surface-2); color:var(--ink); padding:9px 18px; display:flex; align-items:center; justify-content:space-between; font-size:12.5px; border-bottom:1px solid var(--line); }
+  .report-bar .tabs{ display:flex; gap:18px; font-weight:600; }
+  .report-bar .tabs span{ color:var(--ink-faint); padding-bottom:9px; margin-bottom:-10px; }
+  .report-bar .tabs span:first-child{ color:var(--accent-ink); border-bottom:2px solid var(--accent); }
+  .report-bar .meta{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-faint); }
+
+  .filters{ display:flex; gap:8px; flex-wrap:wrap; padding:12px 18px; border-bottom:1px solid var(--line); background:var(--surface-2); }
+  .filter-pill{ display:inline-flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:5px 10px; font-size:12px; color:var(--ink-soft); }
+  .filter-pill b{ color:var(--ink); font-weight:600; }
+  .filter-pill .car{ font-size:9px; color:var(--ink-faint); }
+
+  .report-body{ padding:16px 18px 20px; display:flex; flex-direction:column; gap:14px; }
+
+  .kpi-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .kpi{ border:1px solid var(--line); border-left:3px solid var(--accent); padding:10px 14px; background:var(--surface); }
+  .kpi .label{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+  .kpi .value{ font-family:"Segoe UI", "Source Sans 3", sans-serif; font-size:26px; font-weight:600; margin-top:3px; font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+  .kpi .delta{ font-size:11.5px; margin-top:3px; font-weight:600; }
+  .kpi .delta.up{ color:var(--good); } .kpi .delta.down{ color:var(--bad); }
+
+  .charts-row{ display:grid; grid-template-columns:1.5fr 1fr; gap:12px; }
+  .chart-card{ border:1px solid var(--line); border-radius:2px; padding:12px 14px 8px; background:var(--surface); }
+  .chart-card h3{ font-family:"Source Sans 3", sans-serif; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:8px; }
+  .legend{ display:flex; gap:14px; font-size:10.5px; color:var(--ink-faint); margin-top:4px; }
+  .legend span{ display:inline-flex; align-items:center; gap:4px; }
+  .legend i{ width:9px; height:9px; border-radius:2px; display:inline-block; }
+
+  .table-card{ border:1px solid var(--line); border-radius:2px; padding:12px 14px 14px; background:var(--surface); }
+  .table-card h3{ font-family:"Source Sans 3", sans-serif; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:8px; }
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th{ text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); font-weight:600; border-bottom:2px solid var(--line); padding:5px 8px; }
+  td{ padding:6px 8px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; }
+  tr:last-child td{ border-bottom:none; }
+  .risk-chip{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; }
+  .risk-chip::before{ content:""; width:9px; height:9px; flex:none; }
+  .risk-chip.ok{ color:var(--good); } .risk-chip.ok::before{ background:var(--good); }
+  .risk-chip.warn{ color:var(--warn); } .risk-chip.warn::before{ background:var(--warn); }
+  .risk-chip.bad{ color:var(--bad); } .risk-chip.bad::before{ background:var(--bad); }
+  tr[data-region]:hover{ background:var(--surface-2); }
+  tr[data-region].selected{ background:var(--accent-soft); }
+  tr[data-region].selected td:first-child{ font-weight:700; color:var(--accent-ink); }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:3px; }
+  .section-head h2{ font-size:17px; font-weight:600; }
+  .section-note{ font-size:12.5px; color:var(--ink-soft); margin-top:-8px; }
+
+  .behind-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
+  .card h3{ font-family:"Source Sans 3", sans-serif; font-size:13px; font-weight:600; margin-bottom:10px; color:var(--ink); }
+
+  .dax-block{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:12px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:10px; }
+  .dax-block .m{ color:var(--ink); }
+  .dax-block .m .name{ color:var(--accent-ink); font-weight:600; }
+  .dax-block .m .fn{ color:var(--ink-soft); }
+
+  footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
+
+  @media (max-width:640px){
+    .kpi-row{ grid-template-columns:1fr 1fr; }
+    .charts-row{ grid-template-columns:1fr; }
+    .behind-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Volver al portfolio</a>
+
+  <div class="masthead">
+    <span class="kicker">Portfolio · Case de BI</span>
+    <h1>Cuadro de Mando — Cartera de Crédito</h1>
+    <p>Ejemplo con datos sintéticos — muestra cómo abordo modelado de datos, DAX y diseño de cuadros de mando en Power BI para un contexto de banca/crédito.</p>
+  </div>
+
+  <div class="report">
+    <div class="report-bar">
+      <div class="tabs"><span>Cartera de Crédito</span><span>Morosidad</span><span>Rentabilidad</span></div>
+      <div class="meta">Actualizado: 03/09/2026</div>
+    </div>
+    <div class="filters">
+      <span class="filter-pill">Período <b>Últimos 12 meses</b> <span class="car">▾</span></span>
+      <label class="filter-pill" style="gap:5px;">Región
+        <select id="region-select" style="border:none;background:transparent;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;">
+          <option value="todas">Todas</option>
+          <option value="madrid">Madrid</option>
+          <option value="cataluna">Cataluña</option>
+          <option value="andalucia">Andalucía</option>
+          <option value="valencia">C. Valenciana</option>
+          <option value="vasco">País Vasco</option>
+        </select>
+      </label>
+      <span class="filter-pill">Segmento <b>Particulares + Pymes</b> <span class="car">▾</span></span>
+    </div>
+    <div class="report-body">
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="label">Cartera Total</div><div class="value" id="kpi-cartera">€284,6M</div><div class="delta up" id="kpi-cartera-delta">▲ 4,2% interanual</div></div>
+        <div class="kpi"><div class="label">Tasa de Morosidad</div><div class="value" id="kpi-morosidad">3,1%</div><div class="delta down" id="kpi-morosidad-delta">▼ 0,4 pp vs objetivo</div></div>
+        <div class="kpi"><div class="label">Clientes Activos</div><div class="value" id="kpi-clientes">18.940</div><div class="delta up" id="kpi-clientes-delta">▲ 612 en el período</div></div>
+        <div class="kpi"><div class="label">Contratos en Mora &gt;90d</div><div class="value" id="kpi-mora90">427</div><div class="delta down" id="kpi-mora90-delta" style="color:var(--warn)">▲ 18 vs mes anterior</div></div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>EVOLUCIÓN DE CARTERA VS. OBJETIVO</h3>
+          <svg viewBox="0 0 560 170" width="100%" height="170">
+            <line x1="30" y1="20" x2="30" y2="140" stroke="var(--line)" stroke-width="1"/>
+            <line x1="30" y1="140" x2="540" y2="140" stroke="var(--line)" stroke-width="1"/>
+            <line x1="30" y1="80" x2="540" y2="80" stroke="var(--line)" stroke-width="1" stroke-dasharray="2,3"/>
+            <text x="6" y="84" font-size="9" fill="var(--ink-faint)" font-family="IBM Plex Mono">250M</text>
+            <text x="6" y="144" font-size="9" fill="var(--ink-faint)" font-family="IBM Plex Mono">200M</text>
+            <polyline points="30,120 75,116 120,110 165,108 210,100 255,96 300,90 345,84 390,76 435,68 480,58 525,48"
+              fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+            <polyline points="30,105 75,103 120,101 165,99 210,97 255,95 300,93 345,90 390,88 435,86 480,84 525,82"
+              fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="4,3"/>
+            <g class="pt" style="cursor:pointer">
+              <circle cx="30" cy="120" r="7" fill="transparent"/><circle cx="30" cy="120" r="3" fill="var(--accent)"/>
+              <title>Sep 2025 — Cartera: €221,4M</title>
+            </g>
+            <g class="pt" style="cursor:pointer">
+              <circle cx="165" cy="108" r="7" fill="transparent"/><circle cx="165" cy="108" r="3" fill="var(--accent)"/>
+              <title>Dic 2025 — Cartera: €238,9M</title>
+            </g>
+            <g class="pt" style="cursor:pointer">
+              <circle cx="300" cy="90" r="7" fill="transparent"/><circle cx="300" cy="90" r="3" fill="var(--accent)"/>
+              <title>Mar 2026 — Cartera: €256,3M</title>
+            </g>
+            <g class="pt" style="cursor:pointer">
+              <circle cx="435" cy="68" r="7" fill="transparent"/><circle cx="435" cy="68" r="3" fill="var(--accent)"/>
+              <title>Jun 2026 — Cartera: €271,8M</title>
+            </g>
+            <g class="pt" style="cursor:pointer">
+              <circle cx="525" cy="48" r="7" fill="transparent"/><circle cx="525" cy="48" r="4" fill="var(--accent)"/>
+              <title>Ago 2026 — Cartera: €284,6M (último dato)</title>
+            </g>
+            <text x="470" y="38" font-size="10" fill="var(--accent-ink)" font-family="IBM Plex Mono" font-weight="600" id="line-chart-label">€284,6M</text>
+            <text x="30" y="156" font-size="9" fill="var(--ink-faint)">Sep</text>
+            <text x="150" y="156" font-size="9" fill="var(--ink-faint)">Dic</text>
+            <text x="280" y="156" font-size="9" fill="var(--ink-faint)">Mar</text>
+            <text x="410" y="156" font-size="9" fill="var(--ink-faint)">Jun</text>
+            <text x="510" y="156" font-size="9" fill="var(--ink-faint)">Ago</text>
+          </svg>
+          <div class="legend"><span><i style="background:var(--accent)"></i>Cartera real (pase el cursor por los puntos)</span><span><i style="background:var(--ink-faint)"></i>Objetivo</span></div>
+        </div>
+        <div class="chart-card">
+          <h3>MOROSIDAD POR SEGMENTO</h3>
+          <svg viewBox="0 0 260 170" width="100%" height="170">
+            <text x="4" y="20" font-size="10" fill="var(--ink)" font-family="Source Sans 3">Pymes</text>
+            <rect x="70" y="8" width="150" height="16" fill="var(--surface-2)"/>
+            <rect x="70" y="8" width="112" height="16" fill="var(--bad)" style="cursor:pointer"><title>Pymes — Morosidad 4,8% · Cartera €61,2M</title></rect>
+            <text x="226" y="20" font-size="10" fill="var(--ink-soft)" font-family="IBM Plex Mono">4,8%</text>
+
+            <text x="4" y="50" font-size="10" fill="var(--ink)" font-family="Source Sans 3">Hipotecario</text>
+            <rect x="70" y="38" width="150" height="16" fill="var(--surface-2)"/>
+            <rect x="70" y="38" width="42" height="16" fill="var(--good)" style="cursor:pointer"><title>Hipotecario — Morosidad 1,4% · Cartera €142,7M</title></rect>
+            <text x="226" y="50" font-size="10" fill="var(--ink-soft)" font-family="IBM Plex Mono">1,4%</text>
+
+            <text x="4" y="80" font-size="10" fill="var(--ink)" font-family="Source Sans 3">Consumo</text>
+            <rect x="70" y="68" width="150" height="16" fill="var(--surface-2)"/>
+            <rect x="70" y="68" width="95" height="16" fill="var(--warn)" style="cursor:pointer"><title>Consumo — Morosidad 3,9% · Cartera €58,3M</title></rect>
+            <text x="226" y="80" font-size="10" fill="var(--ink-soft)" font-family="IBM Plex Mono">3,9%</text>
+
+            <text x="4" y="110" font-size="10" fill="var(--ink)" font-family="Source Sans 3">Tarjetas</text>
+            <rect x="70" y="98" width="150" height="16" fill="var(--surface-2)"/>
+            <rect x="70" y="98" width="128" height="16" fill="var(--bad)" style="cursor:pointer"><title>Tarjetas — Morosidad 5,3% · Cartera €22,4M</title></rect>
+            <text x="226" y="110" font-size="10" fill="var(--ink-soft)" font-family="IBM Plex Mono">5,3%</text>
+
+            <line x1="70" y1="4" x2="70" y2="120" stroke="var(--line)" stroke-width="1"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <h3>REGIONES CON MAYOR RIESGO <span style="font-weight:400;color:var(--ink-faint);text-transform:none;font-size:11px;">(clic en una fila para filtrar)</span></h3>
+        <table id="region-table">
+          <thead><tr><th>Región</th><th>Cartera</th><th>Morosidad</th><th>Δ vs. mes anterior</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr data-region="madrid" style="cursor:pointer"><td>Madrid</td><td>€68,2M</td><td>2,6%</td><td>-0,2 pp</td><td><span class="risk-chip ok">Bajo</span></td></tr>
+            <tr data-region="cataluna" style="cursor:pointer"><td>Cataluña</td><td>€51,4M</td><td>3,4%</td><td>+0,1 pp</td><td><span class="risk-chip warn">Medio</span></td></tr>
+            <tr data-region="andalucia" style="cursor:pointer"><td>Andalucía</td><td>€39,7M</td><td>4,9%</td><td>+0,6 pp</td><td><span class="risk-chip bad">Alto</span></td></tr>
+            <tr data-region="valencia" style="cursor:pointer"><td>C. Valenciana</td><td>€28,1M</td><td>3,1%</td><td>0,0 pp</td><td><span class="risk-chip warn">Medio</span></td></tr>
+            <tr data-region="vasco" style="cursor:pointer"><td>País Vasco</td><td>€22,9M</td><td>1,8%</td><td>-0,3 pp</td><td><span class="risk-chip ok">Bajo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Detrás del cuadro de mando</h2></div>
+    <p class="section-note">Modelo semántico y medidas DAX que sostienen las visualizaciones de arriba.</p>
+  </div>
+
+  <div class="behind-grid">
+
+    <div class="card">
+      <h3>MODELO EN ESTRELLA</h3>
+      <svg viewBox="0 0 320 220" width="100%" height="220">
+        <rect x="110" y="85" width="100" height="50" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="160" y="106" font-size="10.5" font-weight="600" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Hechos</text>
+        <text x="160" y="120" font-size="9.5" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Contratos</text>
+
+        <rect x="10" y="10" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="55" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Calendario</text>
+
+        <rect x="220" y="10" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="265" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Cliente</text>
+
+        <rect x="10" y="174" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="55" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Región</text>
+
+        <rect x="220" y="174" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="265" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Producto</text>
+
+        <line x1="100" y1="35" x2="130" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="220" y1="35" x2="190" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="100" y1="188" x2="130" y2="128" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="220" y1="188" x2="190" y2="128" stroke="var(--ink-faint)" stroke-width="1.3"/>
+      </svg>
+    </div>
+
+    <div class="card">
+      <h3>MEDIDAS DAX (EJEMPLOS)</h3>
+      <div class="dax-block">
+        <div class="m"><span class="name">Cartera Total</span> = <span class="fn">SUM</span>(Contratos[Importe])</div>
+        <div class="m"><span class="name">Importe en Mora</span> = <span class="fn">CALCULATE</span>([Cartera Total], Contratos[DiasMora] &gt; 90)</div>
+        <div class="m"><span class="name">Tasa de Morosidad</span> = <span class="fn">DIVIDE</span>([Importe en Mora], [Cartera Total])</div>
+        <div class="m"><span class="name">Crec. Interanual</span> = <span class="fn">DIVIDE</span>([Cartera Total] − <span class="fn">CALCULATE</span>([Cartera Total], <span class="fn">SAMEPERIODLASTYEAR</span>(Dim_Calendario[Fecha])), <span class="fn">CALCULATE</span>([Cartera Total], <span class="fn">SAMEPERIODLASTYEAR</span>(Dim_Calendario[Fecha])))</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h3>ENFOQUE</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">Modelo en estrella para mantener el rendimiento con la cartera creciendo mes a mes — medidas separadas por capas (bases → ratios → variaciones) en vez de fórmulas monolíticas, para que sean reutilizables entre el cuadro de mando de cartera y el de morosidad. Los datos son sintéticos, generados para este caso — no proceden de ningún cliente real.</p>
+  </div>
+
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+
+</div>
+
+<script>
+  const REGION_DATA = {
+    todas:     { cartera: "€284,6M", cartDelta: "▲ 4,2% interanual",      mor: "3,1%", morDelta: "▼ 0,4 pp vs objetivo", cli: "18.940", cliDelta: "▲ 612 en el período", mora90: "427", mora90Delta: "▲ 18 vs mes anterior" },
+    madrid:    { cartera: "€68,2M",  cartDelta: "▲ 5,1% interanual",      mor: "2,6%", morDelta: "▼ 0,2 pp vs objetivo", cli: "5.120",  cliDelta: "▲ 188 en el período", mora90: "71",  mora90Delta: "▼ 4 vs mes anterior" },
+    cataluna:  { cartera: "€51,4M",  cartDelta: "▲ 3,4% interanual",      mor: "3,4%", morDelta: "▲ 0,1 pp vs objetivo", cli: "3.865",  cliDelta: "▲ 96 en el período",  mora90: "88",  mora90Delta: "▲ 3 vs mes anterior" },
+    andalucia: { cartera: "€39,7M",  cartDelta: "▲ 1,8% interanual",      mor: "4,9%", morDelta: "▲ 0,6 pp vs objetivo", cli: "3.102",  cliDelta: "▲ 41 en el período",  mora90: "112", mora90Delta: "▲ 9 vs mes anterior" },
+    valencia:  { cartera: "€28,1M",  cartDelta: "▲ 2,9% interanual",      mor: "3,1%", morDelta: "0,0 pp vs objetivo",   cli: "2.340",  cliDelta: "▲ 58 en el período",  mora90: "54",  mora90Delta: "0 vs mes anterior" },
+    vasco:     { cartera: "€22,9M",  cartDelta: "▲ 6,0% interanual",      mor: "1,8%", morDelta: "▼ 0,3 pp vs objetivo", cli: "1.890",  cliDelta: "▲ 47 en el período",  mora90: "22",  mora90Delta: "▼ 2 vs mes anterior" },
+  };
+
+  const regionSelect = document.getElementById("region-select");
+  const rows = document.querySelectorAll("#region-table tr[data-region]");
+
+  function applyRegion(region) {
+    const d = REGION_DATA[region] || REGION_DATA.todas;
+    document.getElementById("kpi-cartera").textContent = d.cartera;
+    document.getElementById("kpi-cartera-delta").textContent = d.cartDelta;
+    document.getElementById("kpi-morosidad").textContent = d.mor;
+    document.getElementById("kpi-morosidad-delta").textContent = d.morDelta;
+    document.getElementById("kpi-clientes").textContent = d.cli;
+    document.getElementById("kpi-clientes-delta").textContent = d.cliDelta;
+    document.getElementById("kpi-mora90").textContent = d.mora90;
+    document.getElementById("kpi-mora90-delta").textContent = d.mora90Delta;
+    document.getElementById("line-chart-label").textContent = d.cartera;
+
+    rows.forEach(r => r.classList.toggle("selected", r.dataset.region === region));
+    regionSelect.value = region;
+  }
+
+  regionSelect.addEventListener("change", () => applyRegion(regionSelect.value));
+  rows.forEach(r => r.addEventListener("click", () => {
+    const isSame = r.classList.contains("selected");
+    applyRegion(isSame ? "todas" : r.dataset.region);
+  }));
+</script>
+</body>
+</html>

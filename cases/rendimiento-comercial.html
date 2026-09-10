@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuadro de Mando — Rendimiento Comercial · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F0F2EE;
+    --surface:#FFFFFF;
+    --surface-2:#F6F7F4;
+    --ink:#1A231C;
+    --ink-soft:#5A655C;
+    --ink-faint:#909C92;
+    --accent:#5B7A3F;
+    --accent-ink:#425B2C;
+    --accent-soft:#E7EEDF;
+    --line:#DCE1D7;
+    --good:#3E8A5C;
+    --warn:#B4790E;
+    --bad:#C13B3B;
+    --shadow: 0 1px 2px rgba(22,30,17,.05), 0 4px 14px rgba(22,30,17,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#13160F; --surface:#1B1F16; --surface-2:#20251A;
+      --ink:#E8ECE3; --ink-soft:#9FAB98; --ink-faint:#697866;
+      --accent:#8FC26A; --accent-ink:#B0DA92; --accent-soft:#243119;
+      --line:#2C3325; --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#13160F; --surface:#1B1F16; --surface-2:#20251A;
+    --ink:#E8ECE3; --ink-soft:#9FAB98; --ink-faint:#697866;
+    --accent:#8FC26A; --accent-ink:#B0DA92; --accent-soft:#243119;
+    --line:#2C3325; --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  .page{ max-width:980px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
+  h1,h2,h3{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
+
+  .back{ font-size:12.5px; color:var(--accent-ink); text-decoration:none; font-weight:600; }
+  .back:hover{ text-decoration:underline; }
+
+  .masthead{ display:flex; flex-direction:column; gap:3px; }
+  .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-size:24px; }
+  .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:70ch; }
+
+  .report{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; }
+  .report-bar{ background:var(--surface-2); color:var(--ink); padding:9px 18px; display:flex; align-items:center; justify-content:space-between; font-size:12.5px; border-bottom:1px solid var(--line); }
+  .report-bar .tabs{ display:flex; gap:18px; font-weight:600; }
+  .report-bar .tabs span{ color:var(--ink-faint); padding-bottom:9px; margin-bottom:-10px; }
+  .report-bar .tabs span:first-child{ color:var(--accent-ink); border-bottom:2px solid var(--accent); }
+  .report-bar .meta{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-faint); }
+
+  .filters{ display:flex; gap:8px; flex-wrap:wrap; padding:12px 18px; border-bottom:1px solid var(--line); background:var(--surface-2); }
+  .filter-pill{ display:inline-flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:5px 10px; font-size:12px; color:var(--ink-soft); }
+  .filter-pill b{ color:var(--ink); font-weight:600; }
+  .filter-pill select{ border:none;background:transparent;font:inherit;font-weight:600;color:var(--ink);cursor:pointer; }
+
+  .report-body{ padding:16px 18px 20px; display:flex; flex-direction:column; gap:14px; }
+
+  .kpi-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .kpi{ border:1px solid var(--line); border-left:3px solid var(--accent); padding:10px 14px; background:var(--surface); }
+  .kpi .label{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+  .kpi .value{ font-family:"Segoe UI", "Source Sans 3", sans-serif; font-size:26px; font-weight:600; margin-top:3px; font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+  .kpi .delta{ font-size:11.5px; margin-top:3px; font-weight:600; }
+  .kpi .delta.up{ color:var(--good); } .kpi .delta.down{ color:var(--bad); }
+
+  .charts-row{ display:grid; grid-template-columns:1.5fr 1fr; gap:12px; }
+  .chart-card{ border:1px solid var(--line); border-radius:2px; padding:12px 14px 8px; background:var(--surface); }
+  .chart-card h3{ font-family:"Source Sans 3", sans-serif; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:8px; }
+  .legend{ display:flex; gap:14px; font-size:10.5px; color:var(--ink-faint); margin-top:4px; }
+  .legend span{ display:inline-flex; align-items:center; gap:4px; }
+  .legend i{ width:9px; height:9px; display:inline-block; }
+
+  .table-card{ border:1px solid var(--line); border-radius:2px; padding:12px 14px 14px; background:var(--surface); }
+  .table-card h3{ font-family:"Source Sans 3", sans-serif; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:8px; }
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th{ text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); font-weight:600; border-bottom:2px solid var(--line); padding:5px 8px; }
+  td{ padding:7px 8px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; }
+  tr:last-child td{ border-bottom:none; }
+  tr[data-seller]:hover{ background:var(--surface-2); cursor:pointer; }
+  tr[data-seller].selected{ background:var(--accent-soft); }
+  tr[data-seller].selected td:first-child{ font-weight:700; color:var(--accent-ink); }
+  .bar-cell{ display:flex; align-items:center; gap:8px; }
+  .bar-track{ flex:1; height:8px; background:var(--surface-2); position:relative; }
+  .bar-fill{ height:100%; background:var(--accent); }
+  .bar-pct{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--ink-soft); width:36px; text-align:right; }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:3px; }
+  .section-head h2{ font-size:17px; font-weight:600; }
+  .section-note{ font-size:12.5px; color:var(--ink-soft); margin-top:-8px; }
+
+  .behind-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
+  .card h3{ font-size:13px; font-weight:600; margin-bottom:10px; color:var(--ink); }
+
+  .dax-block{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:12px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:10px; }
+  .dax-block .m{ color:var(--ink); }
+  .dax-block .m .name{ color:var(--accent-ink); font-weight:600; }
+  .dax-block .m .fn{ color:var(--ink-soft); }
+
+  footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
+
+  @media (max-width:640px){
+    .kpi-row{ grid-template-columns:1fr 1fr; }
+    .charts-row{ grid-template-columns:1fr; }
+    .behind-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Volver al portfolio</a>
+
+  <div class="masthead">
+    <span class="kicker">Portfolio · Caso de BI</span>
+    <h1>Cuadro de Mando — Rendimiento Comercial</h1>
+    <p>Ejemplo con datos sintéticos, pensado para un área comercial/ventas — modelado de datos, DAX con inteligencia de tiempo (YTD) y un ranking de vendedores con barras de progreso, al estilo de una matriz nativa de Power BI.</p>
+  </div>
+
+  <div class="report">
+    <div class="report-bar">
+      <div class="tabs"><span>Rendimiento Comercial</span><span>Productos</span><span>Clientes</span></div>
+      <div class="meta">Actualizado: 05/09/2026</div>
+    </div>
+    <div class="filters">
+      <label class="filter-pill">Año <select><option>2026</option><option>2025</option></select></label>
+      <label class="filter-pill">Región <select><option>Todas</option><option>Norte</option><option>Centro</option><option>Sur</option></select></label>
+      <label class="filter-pill" style="gap:5px;">Vendedor
+        <select id="seller-select">
+          <option value="todos">Todos</option>
+          <option value="martinez">L. Martínez</option>
+          <option value="fernandez">C. Fernández</option>
+          <option value="souza">A. Souza</option>
+          <option value="ibanez">R. Ibáñez</option>
+          <option value="costa">M. Costa</option>
+        </select>
+      </label>
+    </div>
+    <div class="report-body">
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="label">Ventas YTD</div><div class="value" id="kpi-ventas">€1,84M</div><div class="delta up" id="kpi-ventas-delta">▲ 12% vs año anterior</div></div>
+        <div class="kpi"><div class="label">% Objetivo Alcanzado</div><div class="value" id="kpi-objetivo">91%</div><div class="delta down" id="kpi-objetivo-delta">▼ 9 pp para meta anual</div></div>
+        <div class="kpi"><div class="label">Ticket Medio</div><div class="value" id="kpi-ticket">€2.140</div><div class="delta up" id="kpi-ticket-delta">▲ 4,1% vs trimestre anterior</div></div>
+        <div class="kpi"><div class="label">Nuevos Clientes</div><div class="value" id="kpi-clientes">86</div><div class="delta up" id="kpi-clientes-delta">▲ 14 en el trimestre</div></div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>VENTAS MENSUALES VS. OBJETIVO</h3>
+          <svg viewBox="0 0 560 170" width="100%" height="170">
+            <line x1="30" y1="20" x2="30" y2="140" stroke="var(--line)" stroke-width="1"/>
+            <line x1="30" y1="140" x2="540" y2="140" stroke="var(--line)" stroke-width="1"/>
+            <line x1="30" y1="75" x2="540" y2="75" stroke="var(--line)" stroke-width="1" stroke-dasharray="2,3"/>
+            <text x="6" y="79" font-size="9" fill="var(--ink-faint)" font-family="IBM Plex Mono">200K</text>
+            <text x="6" y="144" font-size="9" fill="var(--ink-faint)" font-family="IBM Plex Mono">100K</text>
+            <polyline points="30,118 75,110 120,122 165,100 210,95 255,88 300,102 345,80 390,70 435,60 480,66 525,45"
+              fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+            <line x1="30" y1="75" x2="540" y2="75" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="4,3"/>
+            <g><circle cx="30" cy="118" r="7" fill="transparent"/><circle cx="30" cy="118" r="3" fill="var(--accent)"/><title>Ene — €148K</title></g>
+            <g><circle cx="165" cy="100" r="7" fill="transparent"/><circle cx="165" cy="100" r="3" fill="var(--accent)"/><title>Abr — €172K</title></g>
+            <g><circle cx="300" cy="102" r="7" fill="transparent"/><circle cx="300" cy="102" r="3" fill="var(--accent)"/><title>Jul — €169K</title></g>
+            <g><circle cx="435" cy="60" r="7" fill="transparent"/><circle cx="435" cy="60" r="3" fill="var(--accent)"/><title>Oct — €201K</title></g>
+            <g><circle cx="525" cy="45" r="7" fill="transparent"/><circle cx="525" cy="45" r="4" fill="var(--accent)"/><title>Dic — €212K (último dato)</title></g>
+            <text x="30" y="156" font-size="9" fill="var(--ink-faint)">Ene</text>
+            <text x="150" y="156" font-size="9" fill="var(--ink-faint)">Abr</text>
+            <text x="280" y="156" font-size="9" fill="var(--ink-faint)">Jul</text>
+            <text x="410" y="156" font-size="9" fill="var(--ink-faint)">Oct</text>
+            <text x="510" y="156" font-size="9" fill="var(--ink-faint)">Dic</text>
+          </svg>
+          <div class="legend"><span><i style="background:var(--accent)"></i>Ventas reales (pase el cursor por los puntos)</span><span><i style="background:var(--ink-faint)"></i>Objetivo mensual</span></div>
+        </div>
+        <div class="chart-card">
+          <h3>TOP 5 PRODUCTOS</h3>
+          <svg viewBox="0 0 260 170" width="100%" height="170">
+            <text x="4" y="20" font-size="10" fill="var(--ink)">Línea Premium</text>
+            <rect x="4" y="26" width="252" height="14" fill="var(--surface-2)"/>
+            <rect x="4" y="26" width="220" height="14" fill="var(--accent)"><title>Línea Premium — €412K</title></rect>
+
+            <text x="4" y="56" font-size="10" fill="var(--ink)">Línea Estándar</text>
+            <rect x="4" y="62" width="252" height="14" fill="var(--surface-2)"/>
+            <rect x="4" y="62" width="176" height="14" fill="var(--accent)"><title>Línea Estándar — €330K</title></rect>
+
+            <text x="4" y="92" font-size="10" fill="var(--ink)">Accesorios</text>
+            <rect x="4" y="98" width="252" height="14" fill="var(--surface-2)"/>
+            <rect x="4" y="98" width="118" height="14" fill="var(--accent)"><title>Accesorios — €221K</title></rect>
+
+            <text x="4" y="128" font-size="10" fill="var(--ink)">Servicio Postventa</text>
+            <rect x="4" y="134" width="252" height="14" fill="var(--surface-2)"/>
+            <rect x="4" y="134" width="84" height="14" fill="var(--accent)"><title>Servicio Postventa — €158K</title></rect>
+          </svg>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <h3>RANKING DE VENDEDORES <span style="font-weight:400;color:var(--ink-faint);text-transform:none;font-size:11px;">(clic en una fila para filtrar)</span></h3>
+        <table id="seller-table">
+          <thead><tr><th>Vendedor</th><th>Ventas YTD</th><th>Clientes</th><th>Progreso hacia objetivo</th></tr></thead>
+          <tbody>
+            <tr data-seller="martinez"><td>L. Martínez</td><td>€412K</td><td>34</td><td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:96%"></div></div><span class="bar-pct">96%</span></div></td></tr>
+            <tr data-seller="fernandez"><td>C. Fernández</td><td>€368K</td><td>29</td><td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div><span class="bar-pct">88%</span></div></td></tr>
+            <tr data-seller="souza"><td>A. Souza</td><td>€301K</td><td>22</td><td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><span class="bar-pct">74%</span></div></td></tr>
+            <tr data-seller="ibanez"><td>R. Ibáñez</td><td>€276K</td><td>19</td><td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:68%"></div></div><span class="bar-pct">68%</span></div></td></tr>
+            <tr data-seller="costa"><td>M. Costa</td><td>€198K</td><td>14</td><td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:52%"></div></div><span class="bar-pct">52%</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Detrás del cuadro de mando</h2></div>
+    <p class="section-note">Modelo semántico y medidas DAX con inteligencia de tiempo.</p>
+  </div>
+
+  <div class="behind-grid">
+
+    <div class="card">
+      <h3>MODELO EN ESTRELLA</h3>
+      <svg viewBox="0 0 320 220" width="100%" height="220">
+        <rect x="110" y="85" width="100" height="50" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="160" y="106" font-size="10.5" font-weight="600" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Hechos</text>
+        <text x="160" y="120" font-size="9.5" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Ventas</text>
+
+        <rect x="10" y="10" width="90" height="36" rx="3" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="55" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Fecha</text>
+
+        <rect x="220" y="10" width="90" height="36" rx="3" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="265" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Producto</text>
+
+        <rect x="10" y="174" width="90" height="36" rx="3" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="55" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Vendedor</text>
+
+        <rect x="220" y="174" width="90" height="36" rx="3" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="265" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Cliente</text>
+
+        <line x1="100" y1="35" x2="130" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="220" y1="35" x2="190" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="100" y1="188" x2="130" y2="128" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="220" y1="188" x2="190" y2="128" stroke="var(--ink-faint)" stroke-width="1.3"/>
+      </svg>
+    </div>
+
+    <div class="card">
+      <h3>MEDIDAS DAX (EJEMPLOS)</h3>
+      <div class="dax-block">
+        <div class="m"><span class="name">Ventas YTD</span> = <span class="fn">TOTALYTD</span>(<span class="fn">SUM</span>(Ventas[Importe]), Dim_Fecha[Fecha])</div>
+        <div class="m"><span class="name">% Objetivo</span> = <span class="fn">DIVIDE</span>([Ventas YTD], [Objetivo Anual])</div>
+        <div class="m"><span class="name">Ticket Medio</span> = <span class="fn">DIVIDE</span>([Ventas YTD], <span class="fn">DISTINCTCOUNT</span>(Ventas[PedidoID]))</div>
+        <div class="m"><span class="name">Var. vs Año Anterior</span> = <span class="fn">DIVIDE</span>([Ventas YTD] − <span class="fn">CALCULATE</span>([Ventas YTD], <span class="fn">SAMEPERIODLASTYEAR</span>(Dim_Fecha[Fecha])), <span class="fn">CALCULATE</span>([Ventas YTD], <span class="fn">SAMEPERIODLASTYEAR</span>(Dim_Fecha[Fecha])))</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h3>ENFOQUE</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">El ranking usa formato condicional con barra de progreso por fila (medida de % hacia objetivo), y las medidas de tiempo (YTD, año anterior) están separadas de las medidas base para poder reutilizarlas en la página de Productos y Clientes sin duplicar lógica. Los datos son sintéticos, generados para este caso — no proceden de ningún cliente real.</p>
+  </div>
+
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+
+</div>
+
+<script>
+  const SELLER_DATA = {
+    todos:     { ventas: "€1,84M", ventasDelta: "▲ 12% vs año anterior",   obj: "91%", objDelta: "▼ 9 pp para meta anual",    ticket: "€2.140", ticketDelta: "▲ 4,1% vs trimestre anterior", cli: "86", cliDelta: "▲ 14 en el trimestre" },
+    martinez:  { ventas: "€412K",  ventasDelta: "▲ 18% vs año anterior",   obj: "96%", objDelta: "▼ 4 pp para meta anual",    ticket: "€2.410", ticketDelta: "▲ 6,2% vs trimestre anterior", cli: "34", cliDelta: "▲ 6 en el trimestre" },
+    fernandez: { ventas: "€368K",  ventasDelta: "▲ 9% vs año anterior",    obj: "88%", objDelta: "▼ 12 pp para meta anual",   ticket: "€2.260", ticketDelta: "▲ 2,8% vs trimestre anterior", cli: "29", cliDelta: "▲ 5 en el trimestre" },
+    souza:     { ventas: "€301K",  ventasDelta: "▲ 7% vs año anterior",    obj: "74%", objDelta: "▼ 26 pp para meta anual",   ticket: "€1.980", ticketDelta: "▲ 1,4% vs trimestre anterior", cli: "22", cliDelta: "▲ 3 en el trimestre" },
+    ibanez:    { ventas: "€276K",  ventasDelta: "▲ 5% vs año anterior",    obj: "68%", objDelta: "▼ 32 pp para meta anual",   ticket: "€1.890", ticketDelta: "▼ 0,6% vs trimestre anterior", cli: "19", cliDelta: "▲ 2 en el trimestre" },
+    costa:     { ventas: "€198K",  ventasDelta: "▼ 3% vs año anterior",    obj: "52%", objDelta: "▼ 48 pp para meta anual",   ticket: "€1.720", ticketDelta: "▼ 2,1% vs trimestre anterior", cli: "14", cliDelta: "0 en el trimestre" },
+  };
+
+  const sellerSelect = document.getElementById("seller-select");
+  const rows = document.querySelectorAll("#seller-table tr[data-seller]");
+
+  function applySeller(seller) {
+    const d = SELLER_DATA[seller] || SELLER_DATA.todos;
+    document.getElementById("kpi-ventas").textContent = d.ventas;
+    document.getElementById("kpi-ventas-delta").textContent = d.ventasDelta;
+    document.getElementById("kpi-objetivo").textContent = d.obj;
+    document.getElementById("kpi-objetivo-delta").textContent = d.objDelta;
+    document.getElementById("kpi-ticket").textContent = d.ticket;
+    document.getElementById("kpi-ticket-delta").textContent = d.ticketDelta;
+    document.getElementById("kpi-clientes").textContent = d.cli;
+    document.getElementById("kpi-clientes-delta").textContent = d.cliDelta;
+    rows.forEach(r => r.classList.toggle("selected", r.dataset.seller === seller));
+    sellerSelect.value = seller;
+  }
+
+  sellerSelect.addEventListener("change", () => applySeller(sellerSelect.value));
+  rows.forEach(r => r.addEventListener("click", () => {
+    const isSame = r.classList.contains("selected");
+    applySeller(isSame ? "todos" : r.dataset.seller);
+  }));
+</script>
+</body>
+</html>

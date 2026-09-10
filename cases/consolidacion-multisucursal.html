@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consolidación Multi-Sucursal · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F0F2EE; --surface:#FFFFFF; --surface-2:#F6F7F4;
+    --ink:#1A231C; --ink-soft:#5A655C; --ink-faint:#909C92;
+    --accent:#5B7A3F; --accent-ink:#425B2C; --accent-soft:#E7EEDF;
+    --line:#DCE1D7; --good:#3E8A5C; --warn:#B4790E; --bad:#C13B3B;
+    --shadow: 0 1px 2px rgba(22,30,17,.05), 0 4px 14px rgba(22,30,17,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#13160F; --surface:#1B1F16; --surface-2:#20251A;
+      --ink:#E8ECE3; --ink-soft:#9FAB98; --ink-faint:#697866;
+      --accent:#8FC26A; --accent-ink:#B0DA92; --accent-soft:#243119;
+      --line:#2C3325; --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#13160F; --surface:#1B1F16; --surface-2:#20251A;
+    --ink:#E8ECE3; --ink-soft:#9FAB98; --ink-faint:#697866;
+    --accent:#8FC26A; --accent-ink:#B0DA92; --accent-soft:#243119;
+    --line:#2C3325; --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  .page{ max-width:980px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
+  h1,h2,h3{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
+
+  .back{ font-size:12.5px; color:var(--accent-ink); text-decoration:none; font-weight:600; }
+  .back:hover{ text-decoration:underline; }
+
+  .masthead{ display:flex; flex-direction:column; gap:3px; }
+  .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-size:24px; }
+  .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:70ch; }
+
+  .pq-window{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; }
+  .pq-bar{ background:var(--surface-2); border-bottom:1px solid var(--line); padding:8px 14px; font-size:11.5px; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace; overflow-x:auto; white-space:nowrap; }
+  .pq-body{ display:grid; grid-template-columns:150px 1fr 190px; min-height:320px; }
+  .pq-queries{ border-right:1px solid var(--line); padding:10px 0; background:var(--surface-2); }
+  .pq-queries .grp{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); padding:4px 12px; }
+  .pq-queries .q{ padding:5px 12px; font-size:12px; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .pq-queries .q.active{ background:var(--accent-soft); color:var(--accent-ink); font-weight:600; border-right:2px solid var(--accent); }
+  .pq-queries .q i{ width:6px; height:6px; background:var(--ink-faint); flex:none; }
+  .pq-queries .q.active i{ background:var(--accent); }
+
+  .pq-main{ padding:12px 14px; overflow-x:auto; }
+  .pq-formula{ font-family:"IBM Plex Mono",monospace; font-size:11px; background:var(--surface-2); border:1px solid var(--line); padding:6px 10px; margin-bottom:10px; color:var(--ink-soft); overflow-x:auto; white-space:nowrap; }
+  table.pq{ width:100%; border-collapse:collapse; font-size:11.5px; }
+  table.pq th{ background:var(--surface-2); text-align:left; font-weight:600; padding:5px 8px; border:1px solid var(--line); color:var(--ink); }
+  table.pq td{ padding:5px 8px; border:1px solid var(--line); color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  table.pq td.bad{ background:var(--bad); color:#fff; }
+  table.pq td.fixed{ background:var(--good); color:#fff; }
+
+  .pq-steps{ border-left:1px solid var(--line); padding:10px 12px; background:var(--surface-2); }
+  .pq-steps .lbl{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin-bottom:6px; }
+  .pq-steps ol{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:1px; }
+  .pq-steps li{ font-size:11.5px; padding:5px 8px; color:var(--ink-soft); border-left:2px solid transparent; }
+  .pq-steps li.current{ background:var(--surface); color:var(--accent-ink); font-weight:600; border-left:2px solid var(--accent); }
+
+  .before-after{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .ba-card{ border:1px solid var(--line); border-radius:2px; padding:12px 14px; background:var(--surface); }
+  .ba-card h3{ font-size:12px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
+  .ba-card.before h3{ color:var(--bad); } .ba-card.after h3{ color:var(--good); }
+  .ba-card ul{ margin:0; padding-left:18px; font-size:13px; color:var(--ink-soft); display:flex; flex-direction:column; gap:4px; }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:3px; }
+  .section-head h2{ font-size:17px; font-weight:600; }
+  .section-note{ font-size:12.5px; color:var(--ink-soft); margin-top:-8px; }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
+  .card h3{ font-size:13px; font-weight:600; margin-bottom:10px; color:var(--ink); }
+  .m-block{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; white-space:pre-wrap; color:var(--ink); line-height:1.6; overflow-x:auto; }
+  .m-block .kw{ color:var(--accent-ink); font-weight:600; }
+  .m-block .cm{ color:var(--ink-faint); }
+
+  footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
+
+  @media (max-width:680px){
+    .pq-body{ grid-template-columns:1fr; }
+    .pq-queries, .pq-steps{ border:none; border-top:1px solid var(--line); }
+    .before-after{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Volver al portfolio</a>
+
+  <div class="masthead">
+    <span class="kicker">Portfolio · Caso de BI</span>
+    <h1>Consolidación Multi-Sucursal con Power Query</h1>
+    <p>Ejemplo con datos sintéticos — combinar archivos de ventas de distintas sucursales, cada uno con formato ligeramente distinto, en una tabla única y limpia lista para el modelo.</p>
+  </div>
+
+  <div class="before-after">
+    <div class="ba-card before">
+      <h3>El problema</h3>
+      <ul>
+        <li>12 archivos mensuales por sucursal, nombres de columna inconsistentes</li>
+        <li>Nombres de sucursal escritos de formas distintas ("MADRID", "Madrid ", "madrid-centro")</li>
+        <li>Fechas en 3 formatos distintos según el archivo de origen</li>
+        <li>Columnas de meses en formato ancho (una columna por mes) en vez de filas</li>
+      </ul>
+    </div>
+    <div class="ba-card after">
+      <h3>El resultado</h3>
+      <ul>
+        <li>Una consulta que se actualiza sola al añadir un archivo nuevo a la carpeta</li>
+        <li>Nombres de sucursal estandarizados con una tabla de referencia</li>
+        <li>Una columna de fecha, un tipo de dato, sin ambigüedad</li>
+        <li>Formato largo (una fila por sucursal/mes) — listo para relacionar con el modelo</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pq-window">
+    <div class="pq-bar">Editor de Power Query — fx = Tabla.TransformColumnTypes(#"Filas filtradas", {&#123;"Fecha", type date&#125;})</div>
+    <div class="pq-body">
+      <div class="pq-queries">
+        <div class="grp">Consultas</div>
+        <div class="q"><i></i>Ventas_Enero</div>
+        <div class="q"><i></i>Ventas_Febrero</div>
+        <div class="q"><i></i>Ventas_Marzo</div>
+        <div class="q"><i></i>…</div>
+        <div class="q active"><i></i>Tabla_Consolidada</div>
+        <div class="q"><i></i>Dim_Sucursal (ref.)</div>
+      </div>
+      <div class="pq-main">
+        <div class="pq-formula">= Table.TransformColumnTypes(#"Filas filtradas", &#123;&#123;"Fecha", type date&#125;&#125;)</div>
+        <table class="pq">
+          <thead><tr><th>Sucursal</th><th>Fecha</th><th>Producto</th><th>Importe</th></tr></thead>
+          <tbody>
+            <tr><td class="bad">MADRID</td><td class="bad">03/14/2026</td><td>Línea Premium</td><td>1.240</td></tr>
+            <tr><td class="fixed">Madrid</td><td class="fixed">2026-03-14</td><td>Línea Premium</td><td>1.240</td></tr>
+            <tr><td class="bad">madrid-centro</td><td class="bad">14-mar-26</td><td>Accesorios</td><td>310</td></tr>
+            <tr><td class="fixed">Madrid</td><td class="fixed">2026-03-14</td><td>Accesorios</td><td>310</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pq-steps">
+        <div class="lbl">Pasos Aplicados</div>
+        <ol>
+          <li>Origen (carpeta)</li>
+          <li>Archivos combinados</li>
+          <li>Encabezados promovidos</li>
+          <li>Anular dinamización de columnas</li>
+          <li>Combinar con Dim_Sucursal</li>
+          <li>Valores reemplazados</li>
+          <li class="current">Tipo cambiado (Fecha)</li>
+          <li>Filas en blanco quitadas</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Detrás de la consulta</h2></div>
+    <p class="section-note">Fragmento del código M generado (editable a mano cuando el editor visual no alcanza).</p>
+  </div>
+
+  <div class="card">
+    <h3>CÓDIGO M — NORMALIZACIÓN DE SUCURSAL</h3>
+    <div class="m-block"><span class="cm">// Estandariza variantes de escritura antes de combinar con Dim_Sucursal</span>
+<span class="kw">let</span>
+    Origen = <span class="kw">Table</span>.TransformColumns(#"Encabezados promovidos",
+        &#123;&#123;"Sucursal", <span class="kw">each</span> Text.Trim(Text.Upper(_)), <span class="kw">type text</span>&#125;&#125;),
+    Reemplazado = <span class="kw">Table</span>.ReplaceValue(Origen, "MADRID-CENTRO", "MADRID",
+        Replacer.ReplaceText, &#123;"Sucursal"&#125;)
+<span class="kw">in</span>
+    Reemplazado</div>
+  </div>
+
+  <div class="card">
+    <h3>ENFOQUE</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">Consulta parametrizada a nivel de carpeta (no archivo por archivo), para que un mes nuevo solo signifique añadir un CSV, no editar la consulta. La limpieza de nombres va antes del merge con la dimensión, no después — así el merge no falla silenciosamente por una variante no reconocida. Los datos son sintéticos, generados para este caso — no proceden de ningún cliente real.</p>
+  </div>
+
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+
+</div>
+</body>
+</html>
