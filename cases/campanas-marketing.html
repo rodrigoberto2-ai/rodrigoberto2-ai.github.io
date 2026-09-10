@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel de Marketing — Campañas · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F3EFEF; --surface:#FFFFFF; --surface-2:#F7F3F3;
+    --ink:#221A1B; --ink-soft:#5E5254; --ink-faint:#948688;
+    --accent:#C81E3A; --accent-ink:#9E1730; --accent-soft:#FBE4E8;
+    --line:#E4DBDC; --good:#1E8A5F; --warn:#B4790E; --bad:#D9542D;
+    --shadow: 0 1px 2px rgba(30,15,17,.05), 0 4px 14px rgba(30,15,17,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#191012; --surface:#231819; --surface-2:#2A1D1E;
+      --ink:#F0E7E8; --ink-soft:#B3A0A2; --ink-faint:#78686A;
+      --accent:#F0576F; --accent-ink:#F58AA0; --accent-soft:#3A1A22;
+      --line:#3A2B2C; --good:#4FBE8C; --warn:#E0A93E; --bad:#E97B54;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#191012; --surface:#231819; --surface-2:#2A1D1E;
+    --ink:#F0E7E8; --ink-soft:#B3A0A2; --ink-faint:#78686A;
+    --accent:#F0576F; --accent-ink:#F58AA0; --accent-soft:#3A1A22;
+    --line:#3A2B2C; --good:#4FBE8C; --warn:#E0A93E; --bad:#E97B54;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  .page{ max-width:1020px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
+  h1,h2,h3{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
+
+  .back{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); text-decoration:none; }
+  .back:hover{ color:var(--accent-ink); }
+
+  .masthead{ display:flex; flex-direction:column; gap:3px; }
+  .mast-top{ display:flex; align-items:center; gap:10px; }
+  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:11.5px; color:var(--accent); border:1px solid var(--accent); width:36px; height:26px; display:flex; align-items:center; justify-content:center; flex:none; }
+  .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-family:"Fraunces", Georgia, serif; font-size:27px; font-weight:600; font-optical-sizing:auto; letter-spacing:-.005em; }
+  .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:72ch; }
+
+  /* ---- premium template shell ---- */
+  .app-shell{ display:grid; grid-template-columns:66px 1fr; background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 14px 36px rgba(30,15,17,.1); }
+
+  .sidenav{ background:linear-gradient(190deg, var(--ink) 0%, #150F10 100%); display:flex; flex-direction:column; align-items:center; gap:8px; padding:18px 0; }
+  .sidenav .brand{ width:30px; height:30px; border-radius:8px; background:var(--accent); margin-bottom:10px; }
+  .sidenav .tab{ width:38px; height:38px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono", monospace; font-size:10px; font-weight:700; color:rgba(255,255,255,.45); letter-spacing:.02em; }
+  .sidenav .tab.active{ background:var(--accent); color:#fff; }
+
+  .main{ min-width:0; }
+  .main-header{ display:flex; align-items:center; justify-content:space-between; padding:16px 22px; border-bottom:1px solid var(--line); gap:12px; flex-wrap:wrap; }
+  .main-header h2{ font-size:15px; }
+  .main-header .meta{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-faint); }
+  .logo-slot{ border:1.5px dashed var(--line); border-radius:8px; padding:5px 12px; font-family:"IBM Plex Mono", monospace; font-size:9.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; }
+
+  .hero-kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; padding:20px 22px 4px; }
+  .hero-kpi{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow); }
+  .hero-kpi .lbl{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+  .hero-kpi .val{ font-size:30px; font-weight:800; margin-top:4px; font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+  .hero-kpi .delta{ font-size:11.5px; font-weight:600; margin-top:2px; }
+  .hero-kpi .delta.up{ color:var(--good); } .hero-kpi .delta.down{ color:var(--bad); }
+
+  .body-grid{ display:grid; grid-template-columns:200px 1fr; gap:16px; padding:16px 22px 22px; align-items:start; }
+
+  .slicer-overlay{ background:linear-gradient(160deg, var(--accent), var(--accent-ink)); color:#fff; border-radius:14px; padding:18px 16px; display:flex; flex-direction:column; gap:16px; box-shadow:0 10px 26px rgba(200,30,58,.28); position:sticky; top:16px; }
+  .slicer-overlay .title{ font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.1em; opacity:.75; }
+  .slicer-overlay label{ display:flex; flex-direction:column; gap:6px; font-size:11px; text-transform:uppercase; letter-spacing:.05em; opacity:.9; }
+  .slicer-overlay select{ background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.4); color:#fff; border-radius:7px; padding:7px 8px; font:13px "Source Sans 3", sans-serif; font-weight:600; }
+  .slicer-overlay select option{ color:#111; }
+
+  .charts-col{ display:flex; flex-direction:column; gap:14px; min-width:0; }
+  .chart-card{ border:1px solid var(--line); border-radius:14px; padding:14px 16px 10px; background:var(--surface); }
+  .chart-card h3{ font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:8px; }
+  .legend{ display:flex; gap:14px; font-size:10.5px; color:var(--ink-faint); margin-top:4px; }
+  .legend span{ display:inline-flex; align-items:center; gap:4px; }
+  .legend i{ width:9px; height:9px; border-radius:2px; display:inline-block; }
+
+  .table-card{ border:1px solid var(--line); border-radius:14px; padding:14px 16px 16px; background:var(--surface); }
+  .table-card h3{ font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:8px; }
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th{ text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); font-weight:600; border-bottom:2px solid var(--line); padding:5px 8px; }
+  td{ padding:7px 8px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; }
+  tr:last-child td{ border-bottom:none; }
+  .status{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; }
+  .status::before{ content:""; width:9px; height:9px; flex:none; }
+  .status.ok{ color:var(--good); } .status.ok::before{ background:var(--good); }
+  .status.warn{ color:var(--warn); } .status.warn::before{ background:var(--warn); }
+  .status.bad{ color:var(--bad); } .status.bad::before{ background:var(--bad); }
+  tr[data-camp]:hover{ background:var(--surface-2); cursor:pointer; }
+  tr[data-camp].selected{ background:var(--accent-soft); }
+  tr[data-camp].selected td:first-child{ font-weight:700; color:var(--accent-ink); }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:3px; }
+  .section-head h2{ font-size:17px; font-weight:600; }
+  .section-note{ font-size:12.5px; color:var(--ink-soft); margin-top:-8px; }
+
+  .behind-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
+  .card h3{ font-size:13px; font-weight:600; margin-bottom:10px; color:var(--ink); }
+
+  .dax-block{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:10px; }
+  .dax-block .m{ color:var(--ink); }
+  .dax-block .m .name{ color:var(--accent-ink); font-weight:600; }
+  .dax-block .m .fn{ color:var(--ink-soft); }
+
+  footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
+
+  @media (max-width:760px){
+    .app-shell{ grid-template-columns:1fr; }
+    .sidenav{ flex-direction:row; padding:10px; }
+    .hero-kpis{ grid-template-columns:1fr 1fr; }
+    .body-grid{ grid-template-columns:1fr; }
+    .slicer-overlay{ position:static; flex-direction:row; flex-wrap:wrap; }
+    .behind-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Volver al portfolio</a>
+
+  <div class="masthead">
+    <div class="mast-top">
+      <span class="ticker">MK</span>
+      <span class="kicker">Portfolio · Caso de BI</span>
+    </div>
+    <h1>Panel de Marketing — Rendimiento de Campañas</h1>
+    <p>Ejemplo con datos sintéticos — inspirado en la estructura de plantillas premium de Power BI (menú lateral fijo, KPIs grandes al centro, panel de filtros como overlay de color), en vez del look plano de un informe corporativo estándar.</p>
+  </div>
+
+  <div class="app-shell">
+    <div class="sidenav">
+      <div class="brand"></div>
+      <div class="tab active">RES</div>
+      <div class="tab">CMP</div>
+      <div class="tab">AUD</div>
+      <div class="tab">CNL</div>
+    </div>
+    <div class="main">
+      <div class="main-header">
+        <h2>Resumen de Campañas</h2>
+        <div class="logo-slot">Logo del cliente</div>
+        <div class="meta">Sep 2026 · Actualizado hoy</div>
+      </div>
+
+      <div class="hero-kpis">
+        <div class="hero-kpi"><div class="lbl">Inversión Total</div><div class="val" id="kpi-inversion">€48.200</div><div class="delta up" id="kpi-inversion-delta">▲ 12% vs mes anterior</div></div>
+        <div class="hero-kpi"><div class="lbl">ROAS</div><div class="val" id="kpi-roas">4,8x</div><div class="delta up" id="kpi-roas-delta">▲ 0,6x vs objetivo</div></div>
+        <div class="hero-kpi"><div class="lbl">Conversiones</div><div class="val" id="kpi-conv">1.284</div><div class="delta up" id="kpi-conv-delta">▲ 9% vs mes anterior</div></div>
+        <div class="hero-kpi"><div class="lbl">CPA</div><div class="val" id="kpi-cpa">€37,50</div><div class="delta down" id="kpi-cpa-delta">▼ 6% vs mes anterior</div></div>
+      </div>
+
+      <div class="body-grid">
+        <div class="slicer-overlay">
+          <div class="title">Filtros</div>
+          <label>Campaña
+            <select id="camp-select">
+              <option value="todas">Todas</option>
+              <option value="black-friday">Black Friday</option>
+              <option value="lanzamiento">Lanzamiento Línea Otoño</option>
+              <option value="retargeting">Retargeting Carrito</option>
+              <option value="branding">Branding Q3</option>
+            </select>
+          </label>
+          <label>Canal
+            <select><option>Todos</option><option>Meta Ads</option><option>Google Ads</option><option>TikTok Ads</option><option>Email</option></select>
+          </label>
+          <label>Período
+            <select><option>Últimos 30 días</option><option>Trimestre actual</option><option>Año actual</option></select>
+          </label>
+        </div>
+
+        <div class="charts-col">
+          <div class="chart-card">
+            <h3>GASTO VS. INGRESOS ATRIBUIDOS POR SEMANA</h3>
+            <svg viewBox="0 0 640 150" width="100%" height="150">
+              <line x1="24" y1="10" x2="24" y2="120" stroke="var(--line)" stroke-width="1"/>
+              <line x1="24" y1="120" x2="620" y2="120" stroke="var(--line)" stroke-width="1"/>
+              <polyline points="24,95 130,88 236,70 342,55 448,40 554,22 620,18" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+              <polyline points="24,108 130,104 236,100 342,96 448,90 554,84 620,80" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="4,3"/>
+              <g><circle cx="24" cy="95" r="7" fill="transparent"/><circle cx="24" cy="95" r="3" fill="var(--accent)"/><title>Sem 1 — Ingresos €8.100</title></g>
+              <g><circle cx="236" cy="70" r="7" fill="transparent"/><circle cx="236" cy="70" r="3" fill="var(--accent)"/><title>Sem 3 — Ingresos €10.600</title></g>
+              <g><circle cx="448" cy="40" r="7" fill="transparent"/><circle cx="448" cy="40" r="3" fill="var(--accent)"/><title>Sem 5 — Ingresos €13.400</title></g>
+              <g><circle cx="620" cy="18" r="7" fill="transparent"/><circle cx="620" cy="18" r="4" fill="var(--accent)"/><title>Sem 7 — Ingresos €15.900 (último dato)</title></g>
+              <text x="24" y="136" font-size="9" fill="var(--ink-faint)">Sem 1</text>
+              <text x="596" y="136" font-size="9" fill="var(--ink-faint)">Sem 7</text>
+            </svg>
+            <div class="legend"><span><i style="background:var(--accent)"></i>Ingresos atribuidos</span><span><i style="background:var(--ink-faint)"></i>Gasto</span></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>INVERSIÓN POR CANAL</h3>
+            <svg viewBox="0 0 640 110" width="100%" height="110">
+              <text x="4" y="16" font-size="10" fill="var(--ink)">Meta Ads</text>
+              <rect x="90" y="4" width="540" height="14" fill="var(--surface-2)"/>
+              <rect x="90" y="4" width="330" height="14" fill="var(--accent)"><title>Meta Ads — €19.800</title></rect>
+              <text x="4" y="42" font-size="10" fill="var(--ink)">Google Ads</text>
+              <rect x="90" y="30" width="540" height="14" fill="var(--surface-2)"/>
+              <rect x="90" y="30" width="240" height="14" fill="var(--accent)"><title>Google Ads — €14.400</title></rect>
+              <text x="4" y="68" font-size="10" fill="var(--ink)">TikTok Ads</text>
+              <rect x="90" y="56" width="540" height="14" fill="var(--surface-2)"/>
+              <rect x="90" y="56" width="150" height="14" fill="var(--accent)"><title>TikTok Ads — €9.000</title></rect>
+              <text x="4" y="94" font-size="10" fill="var(--ink)">Email</text>
+              <rect x="90" y="82" width="540" height="14" fill="var(--surface-2)"/>
+              <rect x="90" y="82" width="82" height="14" fill="var(--accent)"><title>Email — €5.000</title></rect>
+            </svg>
+          </div>
+
+          <div class="table-card">
+            <h3>RENDIMIENTO POR CAMPAÑA <span style="font-weight:400;color:var(--ink-faint);text-transform:none;font-size:11px;">(clic en una fila para filtrar)</span></h3>
+            <table id="camp-table">
+              <thead><tr><th>Campaña</th><th>Canal principal</th><th>Gasto</th><th>Conversiones</th><th>ROAS</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr data-camp="black-friday"><td>Black Friday</td><td>Meta Ads</td><td>€14.200</td><td>512</td><td>6,1x</td><td><span class="status ok">Óptimo</span></td></tr>
+                <tr data-camp="lanzamiento"><td>Lanzamiento Línea Otoño</td><td>Google Ads</td><td>€11.800</td><td>340</td><td>4,4x</td><td><span class="status ok">Óptimo</span></td></tr>
+                <tr data-camp="retargeting"><td>Retargeting Carrito</td><td>Meta Ads</td><td>€9.600</td><td>298</td><td>3,2x</td><td><span class="status warn">Revisar</span></td></tr>
+                <tr data-camp="branding"><td>Branding Q3</td><td>TikTok Ads</td><td>€12.600</td><td>134</td><td>1,4x</td><td><span class="status bad">Pausar</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Detrás del cuadro de mando</h2></div>
+    <p class="section-note">Modelo semántico y medidas DAX que sostienen el panel de arriba.</p>
+  </div>
+
+  <div class="behind-grid">
+
+    <div class="card">
+      <h3>MODELO EN ESTRELLA</h3>
+      <svg viewBox="0 0 320 220" width="100%" height="220">
+        <rect x="105" y="85" width="110" height="50" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="160" y="106" font-size="10.5" font-weight="600" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Hechos</text>
+        <text x="160" y="120" font-size="9.5" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Campañas</text>
+
+        <rect x="10" y="10" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="55" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Fecha</text>
+
+        <rect x="220" y="10" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="265" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Canal</text>
+
+        <rect x="10" y="174" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="55" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Campaña</text>
+
+        <rect x="220" y="174" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="265" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Creatividad</text>
+
+        <line x1="100" y1="35" x2="128" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="220" y1="35" x2="192" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="100" y1="188" x2="128" y2="128" stroke="var(--ink-faint)" stroke-width="1.3"/>
+        <line x1="220" y1="188" x2="192" y2="128" stroke="var(--ink-faint)" stroke-width="1.3"/>
+      </svg>
+    </div>
+
+    <div class="card">
+      <h3>MEDIDAS DAX (EJEMPLOS)</h3>
+      <div class="dax-block">
+        <div class="m"><span class="name">ROAS</span> = <span class="fn">DIVIDE</span>([Ingresos Atribuidos], [Inversión Total])</div>
+        <div class="m"><span class="name">CPA</span> = <span class="fn">DIVIDE</span>([Inversión Total], [Conversiones])</div>
+        <div class="m"><span class="name">ROAS Prom. Ponderado</span> = <span class="fn">AVERAGEX</span>(Dim_Campaña, <span class="fn">DIVIDE</span>([Ingresos Campaña], [Inversión Campaña]))</div>
+        <div class="m"><span class="name">Semáforo Rendimiento</span> = <span class="fn">SWITCH</span>(<span class="fn">TRUE</span>(), [ROAS] &gt;= 4, "Óptimo", [ROAS] &gt;= 2, "Revisar", "Pausar")</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h3>ENFOQUE</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">A diferencia de mis otros casos (pensados para verse como un informe nativo de Power BI), este sigue la estructura de una plantilla premium: menú lateral fijo para navegar entre páginas, KPIs grandes como primer punto de lectura y un panel de filtros diferenciado por color — útil cuando el objetivo es que un cliente o dirección entienda el estado de la cuenta en cinco segundos, no que audite cada cifra. La medida "Semáforo Rendimiento" con SWITCH alimenta directamente el estado de cada fila de la tabla. Los datos son sintéticos, generados para este caso — no proceden de ningún cliente real.</p>
+  </div>
+
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+
+</div>
+
+<script>
+  const CAMP_DATA = {
+    todas:        { inv: "€48.200", invDelta: "▲ 12% vs mes anterior", roas: "4,8x", roasDelta: "▲ 0,6x vs objetivo", conv: "1.284", convDelta: "▲ 9% vs mes anterior", cpa: "€37,50", cpaDelta: "▼ 6% vs mes anterior" },
+    "black-friday":  { inv: "€14.200", invDelta: "▲ 22% vs mes anterior", roas: "6,1x", roasDelta: "▲ 1,9x vs objetivo", conv: "512",   convDelta: "▲ 31% vs mes anterior", cpa: "€27,73", cpaDelta: "▼ 14% vs mes anterior" },
+    "lanzamiento":   { inv: "€11.800", invDelta: "▲ 8% vs mes anterior",  roas: "4,4x", roasDelta: "▲ 0,2x vs objetivo", conv: "340",   convDelta: "▲ 6% vs mes anterior",  cpa: "€34,71", cpaDelta: "▼ 2% vs mes anterior" },
+    "retargeting":   { inv: "€9.600",  invDelta: "0% vs mes anterior",    roas: "3,2x", roasDelta: "▼ 0,4x vs objetivo", conv: "298",   convDelta: "▼ 3% vs mes anterior",  cpa: "€32,21", cpaDelta: "▲ 3% vs mes anterior" },
+    "branding":      { inv: "€12.600", invDelta: "▼ 5% vs mes anterior",  roas: "1,4x", roasDelta: "▼ 2,2x vs objetivo", conv: "134",   convDelta: "▼ 11% vs mes anterior", cpa: "€94,03", cpaDelta: "▲ 19% vs mes anterior" },
+  };
+
+  const campSelect = document.getElementById("camp-select");
+  const rows = document.querySelectorAll("#camp-table tr[data-camp]");
+
+  function applyCamp(camp) {
+    const d = CAMP_DATA[camp] || CAMP_DATA.todas;
+    document.getElementById("kpi-inversion").textContent = d.inv;
+    document.getElementById("kpi-inversion-delta").textContent = d.invDelta;
+    document.getElementById("kpi-roas").textContent = d.roas;
+    document.getElementById("kpi-roas-delta").textContent = d.roasDelta;
+    document.getElementById("kpi-conv").textContent = d.conv;
+    document.getElementById("kpi-conv-delta").textContent = d.convDelta;
+    document.getElementById("kpi-cpa").textContent = d.cpa;
+    document.getElementById("kpi-cpa-delta").textContent = d.cpaDelta;
+    rows.forEach(r => r.classList.toggle("selected", r.dataset.camp === camp));
+    campSelect.value = camp;
+  }
+
+  campSelect.addEventListener("change", () => applyCamp(campSelect.value));
+  rows.forEach(r => r.addEventListener("click", () => {
+    const isSame = r.classList.contains("selected");
+    applyCamp(isSame ? "todas" : r.dataset.camp);
+  }));
+</script>
+</body>
+</html>
