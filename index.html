@@ -19,6 +19,7 @@
     --accent-soft:#DEE5F5;
     --line:#D3D7CF;
     --rule:#B9C0B7;
+    --shadow: 0 1px 2px rgba(20,25,22,.05), 0 14px 30px rgba(20,25,22,.09);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -26,6 +27,7 @@
       --ink:#E7EAE5; --ink-soft:#A2AAA3; --ink-faint:#69726C;
       --accent:#7F9BE9; --accent-ink:#AEC0F3; --accent-soft:#1B2440;
       --line:#2A2F29; --rule:#363C35;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 34px rgba(0,0,0,.5);
     }
   }
   :root[data-theme="dark"]{
@@ -33,6 +35,7 @@
     --ink:#E7EAE5; --ink-soft:#A2AAA3; --ink-faint:#69726C;
     --accent:#7F9BE9; --accent-ink:#AEC0F3; --accent-soft:#1B2440;
     --line:#2A2F29; --rule:#363C35;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 34px rgba(0,0,0,.5);
   }
   *{box-sizing:border-box;}
   body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", ui-sans-serif, sans-serif; line-height:1.55; }
@@ -53,27 +56,21 @@
   .factsheet a{ text-decoration:none; border-bottom:1px solid var(--accent-soft); }
   .factsheet a:hover{ border-color:var(--accent); }
 
-  /* ---- KPI strip ---- */
-  .kpi-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
-  .kpi{ background:var(--surface); padding:14px 16px; border-left:3px solid var(--accent); display:flex; flex-direction:column; gap:3px; }
-  .kpi .val{ font-family:"IBM Plex Mono", monospace; font-size:27px; font-weight:600; font-variant-numeric:tabular-nums; color:var(--ink); }
-  .kpi .lbl{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
-
   /* ---- section heads ---- */
   .section-head{ display:flex; align-items:baseline; gap:12px; }
   .section-head .num{ font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-faint); }
   .section-head h2{ font-size:21px; font-weight:560; }
   .section-note{ font-size:13px; color:var(--ink-soft); margin:-6px 0 0; }
 
-  /* ---- case rows ---- */
-  .cases{ display:flex; flex-direction:column; }
-  .case-row{ display:grid; grid-template-columns:56px 1fr auto; gap:18px; align-items:start; padding:18px 4px; border-top:1px solid var(--line); transition:background .15s ease; }
-  .case-row:last-child{ border-bottom:1px solid var(--line); }
+  /* ---- case cards ---- */
+  .cases{ display:flex; flex-direction:column; gap:14px; }
+  .case-row{ display:grid; grid-template-columns:56px 1fr auto; gap:18px; align-items:start; padding:22px; background:var(--surface); border:1px solid var(--line); border-radius:16px; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
   a.case-row{ text-decoration:none; color:inherit; cursor:pointer; }
-  a.case-row:hover{ background:var(--surface); }
-  a.case-row:hover .ticker{ box-shadow:0 0 0 1px var(--tick) inset; }
+  a.case-row:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--tick); }
+  a.case-row:hover .ticker{ background:var(--tick); color:#fff; }
+  .case-row:not(a){ opacity:.94; }
 
-  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:12.5px; color:var(--tick); border:1px solid var(--tick); width:44px; height:32px; display:flex; align-items:center; justify-content:center; letter-spacing:.02em; }
+  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:12.5px; color:var(--tick); border:1px solid var(--tick); width:44px; height:32px; display:flex; align-items:center; justify-content:center; letter-spacing:.02em; border-radius:8px; transition:background .15s ease, color .15s ease; }
 
   .case-main h3{ font-family:"Source Sans 3", sans-serif; font-size:16px; font-weight:700; margin:0 0 4px; }
   .case-main p{ font-size:13.5px; color:var(--ink-soft); margin:0; max-width:56ch; }
@@ -85,7 +82,7 @@
   .case-row:not(a) .case-cta{ color:var(--ink-faint); }
 
   .thumb-wrap{ margin-top:10px; }
-  .thumb-wrap img{ width:100%; max-width:360px; display:block; border:1px solid var(--line); }
+  .thumb-wrap img{ width:100%; max-width:360px; display:block; border:1px solid var(--line); border-radius:10px; }
 
   /* ---- skills ---- */
   .skills-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 40px; }
@@ -99,7 +96,6 @@
 
   @media (max-width:640px){
     .masthead{ grid-template-columns:1fr; }
-    .kpi-row{ grid-template-columns:1fr 1fr; }
     .case-row{ grid-template-columns:44px 1fr; }
     .case-cta{ grid-column:2; }
     .skills-grid{ grid-template-columns:1fr; }
@@ -121,13 +117,6 @@
       <div><dt>Teléfono</dt><dd>+34 614 650 517</dd></div>
       <div><dt>Enfoque</dt><dd>SQL · Power BI · DAX</dd></div>
     </dl>
-  </div>
-
-  <div class="kpi-row">
-    <div class="kpi"><span class="val" data-target="7">7</span><span class="lbl">Casos de portfolio</span></div>
-    <div class="kpi"><span class="val" data-target="4">4</span><span class="lbl">Empresas</span></div>
-    <div class="kpi"><span class="val" data-target="8">8</span><span class="lbl">Herramientas</span></div>
-    <div class="kpi"><span class="val" data-target="13">13</span><span class="lbl">Funciones DAX cubiertas</span></div>
   </div>
 
   <div>
@@ -235,22 +224,5 @@
 
 </div>
 
-<script>
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.querySelectorAll('.kpi .val').forEach(el => {
-    const target = parseInt(el.dataset.target, 10);
-    if (reduce || !target) return;
-    const duration = 700;
-    const start = performance.now();
-    el.textContent = '0';
-    function tick(now) {
-      const p = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(eased * target);
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  });
-</script>
 </body>
 </html>
