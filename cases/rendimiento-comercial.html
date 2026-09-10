@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cuadro de Mando — Rendimiento Comercial · Rodrigo Pinheiro Berto</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
   :root{
     --bg:#F0F2EE;
@@ -43,12 +43,14 @@
   .page{ max-width:980px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
   h1,h2,h3{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
 
-  .back{ font-size:12.5px; color:var(--accent-ink); text-decoration:none; font-weight:600; }
-  .back:hover{ text-decoration:underline; }
+  .back{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); text-decoration:none; }
+  .back:hover{ color:var(--accent-ink); }
 
   .masthead{ display:flex; flex-direction:column; gap:3px; }
+  .mast-top{ display:flex; align-items:center; gap:10px; }
+  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:11.5px; color:var(--accent); border:1px solid var(--accent); width:36px; height:26px; display:flex; align-items:center; justify-content:center; flex:none; }
   .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
-  .masthead h1{ font-size:24px; }
+  .masthead h1{ font-family:"Fraunces", Georgia, serif; font-size:27px; font-weight:600; font-optical-sizing:auto; letter-spacing:-.005em; }
   .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:70ch; }
 
   .report{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; }
@@ -121,7 +123,10 @@
   <a class="back" href="../index.html">← Volver al portfolio</a>
 
   <div class="masthead">
-    <span class="kicker">Portfolio · Caso de BI</span>
+    <div class="mast-top">
+      <span class="ticker">VT</span>
+      <span class="kicker">Portfolio · Caso de BI</span>
+    </div>
     <h1>Cuadro de Mando — Rendimiento Comercial</h1>
     <p>Ejemplo con datos sintéticos, pensado para un área comercial/ventas — modelado de datos, DAX con inteligencia de tiempo (YTD) y un ranking de vendedores con barras de progreso, al estilo de una matriz nativa de Power BI.</p>
   </div>
