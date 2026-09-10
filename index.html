@@ -57,10 +57,12 @@
   .factsheet a:hover{ border-color:var(--accent); }
 
   /* ---- section heads ---- */
-  .section-head{ display:flex; align-items:baseline; gap:12px; }
+  .section{ display:flex; flex-direction:column; gap:22px; }
+  .section-intro{ display:flex; flex-direction:column; gap:7px; padding-bottom:18px; border-bottom:1px solid var(--rule); }
+  .section-head{ display:flex; align-items:baseline; gap:10px; }
   .section-head .num{ font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-faint); }
-  .section-head h2{ font-size:21px; font-weight:560; }
-  .section-note{ font-size:13px; color:var(--ink-soft); margin:-6px 0 0; }
+  .section-head h2{ font-size:22px; font-weight:600; }
+  .section-note{ font-size:13.5px; color:var(--ink-soft); margin:0; max-width:60ch; }
 
   /* ---- case cards ---- */
   .cases{ display:flex; flex-direction:column; gap:14px; }
@@ -119,9 +121,11 @@
     </dl>
   </div>
 
-  <div>
-    <div class="section-head"><span class="num">01</span><h2>Casos de trabajo</h2></div>
-    <p class="section-note">Cada caso incluye el enfoque técnico detrás del resultado visual — no solo la imagen final.</p>
+  <div class="section">
+    <div class="section-intro">
+      <div class="section-head"><span class="num">01</span><h2>Proyectos</h2></div>
+      <p class="section-note">Cada proyecto incluye el enfoque técnico detrás del resultado visual — no solo la imagen final.</p>
+    </div>
 
     <div class="cases">
 
@@ -132,7 +136,7 @@
           <p>Dashboard interactivo de banca/crédito con filtro por región, modelo en estrella y medidas DAX — SUM, CALCULATE, DIVIDE, SAMEPERIODLASTYEAR.</p>
           <div class="case-tags"><span>Power BI</span><span>DAX</span><span>Modelo semántico</span></div>
         </div>
-        <span class="case-cta">Abrir caso →</span>
+        <span class="case-cta">Ver proyecto →</span>
       </a>
 
       <a class="case-row" href="cases/rendimiento-comercial.html" style="--tick:#5B7A3F">
@@ -142,7 +146,7 @@
           <p>Ranking de vendedores con barras de progreso y medidas de inteligencia de tiempo — TOTALYTD, SAMEPERIODLASTYEAR.</p>
           <div class="case-tags"><span>Power BI</span><span>DAX</span><span>Time intelligence</span></div>
         </div>
-        <span class="case-cta">Abrir caso →</span>
+        <span class="case-cta">Ver proyecto →</span>
       </a>
 
       <a class="case-row" href="cases/consolidacion-multisucursal.html" style="--tick:#2E7D6B">
@@ -152,7 +156,7 @@
           <p>Consulta de Power Query que limpia y combina archivos de sucursales con formatos inconsistentes en una tabla única, con el código M detrás.</p>
           <div class="case-tags"><span>Power Query</span><span>Código M</span><span>ETL</span></div>
         </div>
-        <span class="case-cta">Abrir caso →</span>
+        <span class="case-cta">Ver proyecto →</span>
       </a>
 
       <a class="case-row" href="cases/auditoria-rendimiento-dax.html" style="--tick:#9A5B1E">
@@ -162,7 +166,7 @@
           <p>Diagnóstico con el analizador de rendimiento y reescritura de una medida lenta — de FILTER+ALL a RANKX+ALLSELECTED, 8.4s → 0.7s.</p>
           <div class="case-tags"><span>DAX</span><span>Optimización</span><span>Performance Analyzer</span></div>
         </div>
-        <span class="case-cta">Abrir caso →</span>
+        <span class="case-cta">Ver proyecto →</span>
       </a>
 
       <a class="case-row" href="cases/campanas-marketing.html" style="--tick:#C81E3A">
@@ -172,7 +176,7 @@
           <p>Estructura de plantilla premium (menú lateral fijo, KPIs grandes, panel de filtros como overlay) en vez del look plano de un informe nativo — con medidas AVERAGEX y SWITCH.</p>
           <div class="case-tags"><span>Power BI</span><span>DAX</span><span>Diseño de plantilla</span></div>
         </div>
-        <span class="case-cta">Abrir caso →</span>
+        <span class="case-cta">Ver proyecto →</span>
       </a>
 
       <div class="case-row" style="--tick:#2F4E9E">
@@ -200,9 +204,11 @@
     </div>
   </div>
 
-  <div>
-    <div class="section-head"><span class="num">02</span><h2>Habilidades</h2></div>
-    <div class="skills-grid" style="margin-top:14px;">
+  <div class="section">
+    <div class="section-intro">
+      <div class="section-head"><span class="num">02</span><h2>Habilidades</h2></div>
+    </div>
+    <div class="skills-grid">
       <div class="skills-col">
         <h4>Bases de Datos &amp; Cloud</h4>
         <div>SQL avanzado — CTEs, JOINs, optimización</div>
