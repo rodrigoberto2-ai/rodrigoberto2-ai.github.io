@@ -47,6 +47,9 @@
   .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
   .masthead h1{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-size:27px; font-weight:700; letter-spacing:-.005em; }
   .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:72ch; }
+  .live-link{ display:inline-flex; align-items:center; gap:8px; margin-top:6px; background:var(--accent); color:#fff; text-decoration:none; font-size:13px; font-weight:600; padding:9px 16px; border-radius:6px; align-self:flex-start; width:fit-content; }
+  .live-link:hover{ background:var(--accent-ink); }
+  .live-link .dot{ width:7px; height:7px; border-radius:50%; background:#7CFF9A; flex:none; }
 
   .workbook{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; box-shadow:var(--shadow); }
   .wb-toolbar{ background:var(--surface-2); border-bottom:1px solid var(--line); padding:8px 14px; display:flex; align-items:center; justify-content:space-between; font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-faint); }
@@ -119,6 +122,9 @@
     </div>
     <h1>Panel de Operaciones Aéreas — Puntualidad y Rutas</h1>
     <p>Ejemplo con datos sintéticos, construido en el estilo nativo de Tableau — seguimiento de puntualidad (OTP), factor de ocupación y turnaround en tierra por ruta y aeropuerto.</p>
+    <a class="live-link" href="https://public.tableau.com/app/profile/rodrigo.berto/viz/Panel-Operaciones/Painel1" target="_blank" rel="noopener">
+      <span class="dot"></span> Ver el dashboard real en Tableau Public →
+    </a>
   </div>
 
   <div class="workbook">
