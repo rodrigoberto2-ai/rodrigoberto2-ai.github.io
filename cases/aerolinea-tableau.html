@@ -101,8 +101,10 @@
   .calc-block .cm{ color:var(--ink-faint); }
   .calc-block .name{ color:var(--t-orange); font-weight:600; }
 
-  .viz-frame{ padding:0; background:#fff; }
-  .viz-frame tableau-viz{ display:block; width:100%; }
+  /* Dashboard publicado a tamaño fijo 1000x800: el marco lo respeta y se escala en pantallas estrechas */
+  .viz-outer{ align-self:center; width:1002px; height:852px; }
+  .viz-frame{ width:1002px; padding:0; background:#fff; transform-origin:top left; }
+  .viz-frame tableau-viz{ display:block; width:1000px; height:850px; }
 
   footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
 
@@ -128,11 +130,13 @@
     <p>Workbook real construido en Tableau y publicado en Tableau Public, con 4 paneles: operaciones (OTP y ocupación por ruta), ingresos, mantenimiento y experiencia del pasajero. Es interactivo: cambia de panel con las pestañas superiores y pasa el cursor por los gráficos aquí mismo.</p>
   </div>
 
-  <div class="workbook viz-frame">
+  <div class="viz-outer" id="viz-outer">
+  <div class="workbook viz-frame" id="viz-frame">
     <tableau-viz id="tableau-viz"
       src="https://public.tableau.com/views/Panel-Operaciones-v22/PanelOperaciones"
-      toolbar="bottom" width="100%" height="900">
+      toolbar="bottom" width="1000" height="850">
     </tableau-viz>
+  </div>
   </div>
 
   <div class="section">
@@ -197,5 +201,21 @@
 
 </div>
 
+<script>
+  (function(){
+    const W = 1002, H = 852;
+    const outer = document.getElementById("viz-outer");
+    const frame = document.getElementById("viz-frame");
+    function fit(){
+      const avail = document.documentElement.clientWidth - 32;
+      const k = Math.min(1, avail / W);
+      frame.style.transform = k < 1 ? "scale(" + k + ")" : "";
+      outer.style.width = (W * k) + "px";
+      outer.style.height = (H * k) + "px";
+    }
+    fit();
+    window.addEventListener("resize", fit);
+  })();
+</script>
 </body>
 </html>
