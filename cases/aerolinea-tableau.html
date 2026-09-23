@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel de Operaciones Aéreas — Puntualidad y Rutas · Rodrigo Pinheiro Berto</title>
+<title>Panel de Aerolínea · Rodrigo Pinheiro Berto</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
   :root{
@@ -101,6 +101,9 @@
   .calc-block .cm{ color:var(--ink-faint); }
   .calc-block .name{ color:var(--t-orange); font-weight:600; }
 
+  .viz-frame{ padding:0; background:#fff; }
+  .viz-frame tableau-viz{ display:block; width:100%; }
+
   footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
 
   @media (max-width:680px){
@@ -109,6 +112,7 @@
     .behind-grid{ grid-template-columns:1fr; }
   }
 </style>
+<script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 </head>
 <body>
 <div class="page">
@@ -120,92 +124,15 @@
       <span class="ticker">AV</span>
       <span class="kicker">Portfolio · Caso de BI · Tableau</span>
     </div>
-    <h1>Panel de Operaciones Aéreas — Puntualidad y Rutas</h1>
-    <p>Ejemplo con datos sintéticos, construido en el estilo nativo de Tableau — seguimiento de puntualidad (OTP), factor de ocupación y turnaround en tierra por ruta y aeropuerto.</p>
-    <a class="live-link" href="https://public.tableau.com/app/profile/rodrigo.berto/viz/Panel-Operaciones/Painel1" target="_blank" rel="noopener">
-      <span class="dot"></span> Ver el dashboard real en Tableau Public →
-    </a>
+    <h1>Panel de Aerolínea — Operaciones, Ingresos, Mantenimiento y Experiencia</h1>
+    <p>Workbook real construido en Tableau y publicado en Tableau Public, con 4 paneles: operaciones (OTP y ocupación por ruta), ingresos, mantenimiento y experiencia del pasajero. Es interactivo: cambia de panel con las pestañas superiores y pasa el cursor por los gráficos aquí mismo.</p>
   </div>
 
-  <div class="workbook">
-    <div class="wb-toolbar">
-      <span>Panel_Operaciones.twbx</span>
-      <span>Actualizado: hoy</span>
-    </div>
-    <div class="wb-body">
-
-      <div class="filters">
-        <span class="filter-pill">Período <b style="color:var(--ink)">Últimos 30 días</b></span>
-        <label class="filter-pill">Hub
-          <select id="hub-select">
-            <option value="todas">Todos</option>
-            <option value="mad">Madrid (MAD)</option>
-            <option value="bcn">Barcelona (BCN)</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi"><div class="label">Puntualidad (OTP)</div><div class="value" id="kpi-otp">87,2%</div><div class="delta up" id="kpi-otp-delta">▲ 1,8 pp vs mes anterior</div></div>
-        <div class="kpi"><div class="label">Factor de Ocupación</div><div class="value" id="kpi-load">82,6%</div><div class="delta up" id="kpi-load-delta">▲ 3,1 pp vs mes anterior</div></div>
-        <div class="kpi"><div class="label">Turnaround Promedio</div><div class="value" id="kpi-turn">38 min</div><div class="delta down" id="kpi-turn-delta">▼ 3 min vs mes anterior</div></div>
-        <div class="kpi"><div class="label">Vuelos Operados</div><div class="value" id="kpi-vuelos">2.140</div><div class="delta down" id="kpi-vuelos-delta">▼ 0,6% cancelados</div></div>
-      </div>
-
-      <div class="charts-row">
-        <div class="chart-card">
-          <h3>PUNTUALIDAD (OTP) POR SEMANA</h3>
-          <svg viewBox="0 0 600 160" width="100%" height="160">
-            <line x1="26" y1="14" x2="26" y2="130" stroke="var(--line)" stroke-width="1"/>
-            <line x1="26" y1="130" x2="580" y2="130" stroke="var(--line)" stroke-width="1"/>
-            <polyline points="26,78 96,72 166,80 236,60 306,55 376,48 446,42 516,32 580,26" fill="none" stroke="var(--t-blue)" stroke-width="2.4"/>
-            <g><circle cx="26" cy="78" r="7" fill="transparent"/><circle cx="26" cy="78" r="3" fill="var(--t-blue)"/><title>Sem 1 — 82,4%</title></g>
-            <g><circle cx="236" cy="60" r="7" fill="transparent"/><circle cx="236" cy="60" r="3" fill="var(--t-blue)"/><title>Sem 4 — 85,1%</title></g>
-            <g><circle cx="446" cy="42" r="7" fill="transparent"/><circle cx="446" cy="42" r="3" fill="var(--t-blue)"/><title>Sem 7 — 86,8%</title></g>
-            <g><circle cx="580" cy="26" r="7" fill="transparent"/><circle cx="580" cy="26" r="4" fill="var(--t-blue)"/><title>Sem 9 — 87,2% (último dato)</title></g>
-            <text x="26" y="146" font-size="9" fill="var(--ink-faint)">Sem 1</text>
-            <text x="550" y="146" font-size="9" fill="var(--ink-faint)">Sem 9</text>
-          </svg>
-        </div>
-        <div class="chart-card">
-          <h3>FACTOR DE OCUPACIÓN POR RUTA</h3>
-          <svg viewBox="0 0 260 160" width="100%" height="160">
-            <text x="4" y="18" font-size="10" fill="var(--ink)">MAD–BCN</text>
-            <rect x="4" y="24" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="24" width="228" height="14" fill="var(--t-blue)"><title>MAD–BCN — 90,4%</title></rect>
-            <text x="4" y="52" font-size="10" fill="var(--ink)">MAD–LON</text>
-            <rect x="4" y="58" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="58" width="196" height="14" fill="var(--t-orange)"><title>MAD–LON — 77,8%</title></rect>
-            <text x="4" y="86" font-size="10" fill="var(--ink)">BCN–PAR</text>
-            <rect x="4" y="92" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="92" width="210" height="14" fill="var(--t-green)"><title>BCN–PAR — 83,3%</title></rect>
-            <text x="4" y="120" font-size="10" fill="var(--ink)">MAD–LIS</text>
-            <rect x="4" y="126" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="126" width="180" height="14" fill="var(--t-teal)"><title>MAD–LIS — 71,4%</title></rect>
-          </svg>
-        </div>
-      </div>
-
-      <div class="table-card">
-        <h3>RENDIMIENTO POR RUTA <span style="font-weight:400;color:var(--ink-faint);text-transform:none;font-size:11px;">(clic en una fila para filtrar)</span></h3>
-        <table id="route-table">
-          <thead><tr><th>Ruta</th><th>Vuelos</th><th>OTP</th><th>Ocupación</th><th>Estado</th></tr></thead>
-          <tbody>
-            <tr data-route="mad-bcn"><td>MAD–BCN</td><td>612</td><td>91,2%</td><td>90,4%</td><td><span class="status ok">Óptimo</span></td></tr>
-            <tr data-route="mad-lon"><td>MAD–LON</td><td>418</td><td>81,6%</td><td>77,8%</td><td><span class="status warn">Revisar</span></td></tr>
-            <tr data-route="bcn-par"><td>BCN–PAR</td><td>385</td><td>88,9%</td><td>83,3%</td><td><span class="status ok">Óptimo</span></td></tr>
-            <tr data-route="mad-lis"><td>MAD–LIS</td><td>290</td><td>74,2%</td><td>71,4%</td><td><span class="status bad">Crítico</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-    <div class="sheet-tabs">
-      <span class="active">Dashboard Operaciones</span>
-      <span>OTP x Semana</span>
-      <span>Ocupación x Ruta</span>
-      <span>Datos</span>
-    </div>
+  <div class="workbook viz-frame">
+    <tableau-viz id="tableau-viz"
+      src="https://public.tableau.com/views/Panel-Operaciones-v22/PanelOperaciones"
+      toolbar="bottom" width="100%" height="900">
+    </tableau-viz>
   </div>
 
   <div class="section">
@@ -270,25 +197,5 @@
 
 </div>
 
-<script>
-  const ROUTE_DATA = {
-    todas: { otp: "87,2%", load: "82,6%" },
-    "mad-bcn": { otp: "91,2%", load: "90,4%" },
-    "mad-lon": { otp: "81,6%", load: "77,8%" },
-    "bcn-par": { otp: "88,9%", load: "83,3%" },
-    "mad-lis": { otp: "74,2%", load: "71,4%" },
-  };
-  const rows = document.querySelectorAll("#route-table tr[data-route]");
-  function applyRoute(key) {
-    const d = ROUTE_DATA[key] || ROUTE_DATA.todas;
-    document.getElementById("kpi-otp").textContent = d.otp;
-    document.getElementById("kpi-load").textContent = d.load;
-    rows.forEach(r => r.classList.toggle("selected", r.dataset.route === key));
-  }
-  rows.forEach(r => r.addEventListener("click", () => {
-    const isSame = r.classList.contains("selected");
-    applyRoute(isSame ? "todas" : r.dataset.route);
-  }));
-</script>
 </body>
 </html>
