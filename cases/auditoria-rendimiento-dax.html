@@ -103,7 +103,7 @@
       <span class="kicker">Portfolio · Caso de BI</span>
     </div>
     <h1>Auditoría de Rendimiento de un Modelo DAX</h1>
-    <p>Ejemplo con datos sintéticos — un informe que tardaba más de 8 segundos en refrescar, diagnosticado con el analizador de rendimiento y reescrito hasta bajar de 1 segundo.</p>
+    <p>Un informe tardaba más de 8 segundos en cargar. Lo medí con el Performance Analyzer y reescribí la medida que lo frenaba hasta bajar de 1 segundo. Datos sintéticos.</p>
   </div>
 
   <div class="kpi-row">
@@ -115,7 +115,7 @@
 
   <div class="section">
     <div class="section-head"><h2>Dónde se iba el tiempo</h2></div>
-    <p class="section-note">Motor de fórmulas (DAX) vs. motor de almacenamiento (VertiPaq), por consulta — visto en el analizador de rendimiento de Power BI.</p>
+    <p class="section-note">Tiempo por consulta en el Performance Analyzer: motor de fórmulas frente a motor de almacenamiento.</p>
   </div>
 
   <div class="timeline-wrap">
@@ -132,7 +132,7 @@
       <div class="bar" style="height:6%"></div>
     </div>
     <div class="timeline-legend">
-      <span class="l2">Motor de fórmulas (DAX) — el 94% del tiempo total estaba aquí, concentrado en una sola medida</span>
+      <span class="l2">Motor de fórmulas (DAX): aquí estaba el 94 % del tiempo, casi todo en una sola medida</span>
       <span class="l1">Motor de almacenamiento</span>
     </div>
   </div>
@@ -149,7 +149,7 @@ Ranking Cliente =
         <span class="kw">CALCULATE</span>( [Ventas Totales] ) &gt; [Ventas Totales]
     )
 ) + 1</div>
-        <p class="note">FILTER sobre ALL(Clientes) fuerza un escaneo fila-por-fila de toda la tabla de clientes, dentro del motor de fórmulas, para cada celda visual. Con 40k clientes y 60 filas visibles, son ~2.4M evaluaciones de contexto.</p>
+        <p class="note">FILTER sobre ALL(Clientes) recorre toda la tabla de clientes en el motor de fórmulas, una vez por cada celda. Con 40.000 clientes y 60 filas en pantalla son unos 2,4 millones de evaluaciones.</p>
       </div>
     </div>
     <div class="vcard fast">
@@ -164,7 +164,7 @@ Ranking Cliente =
     <span class="kw">DESC</span>,
     Dense
 )</div>
-        <p class="note">RANKX delega gran parte del trabajo al motor de almacenamiento (VertiPaq) en vez de iterar fila por fila en el motor de fórmulas. ALLSELECTED en vez de ALL respeta los filtros de página/informe pero ignora el filtro de la propia visual — el ranking no colapsa a "1" cuando se filtra una sola fila.</p>
+        <p class="note">RANKX deja casi todo el trabajo al motor de almacenamiento. Con ALLSELECTED en vez de ALL, el ranking respeta los filtros de la página pero no el de la propia tabla, así que no se queda en «1» al filtrar una fila.</p>
       </div>
     </div>
   </div>
@@ -179,16 +179,16 @@ Ranking Cliente =
       <tr><td>Ranking Cliente</td><td>7.9 s</td><td>0.4 s</td><td class="tech">FILTER(ALL()) → RANKX(ALLSELECTED())</td></tr>
       <tr><td>Ticket Promedio Ponderado</td><td>0.3 s</td><td>0.1 s</td><td class="tech">SUMX anidado → AVERAGEX directo</td></tr>
       <tr><td>Clientes Activos (90d)</td><td>0.2 s</td><td>0.1 s</td><td class="tech">DISTINCTCOUNT + FILTER → CALCULATE + KEEPFILTERS</td></tr>
-      <tr><td>Margen %</td><td>&lt;0.1 s</td><td>&lt;0.1 s</td><td class="tech">sin cambios — ya usaba DIVIDE</td></tr>
+      <tr><td>Margen %</td><td>&lt;0.1 s</td><td>&lt;0.1 s</td><td class="tech">sin cambios, ya usaba DIVIDE</td></tr>
     </tbody>
   </table>
 
   <div class="card">
     <h3>ENFOQUE</h3>
-    <p style="font-size:13px; color:var(--ink-soft); margin:0;">El primer paso no fue tocar el DAX — fue medir con el analizador de rendimiento para ver cuánto tiempo se iba al motor de fórmulas frente al motor de almacenamiento, y en qué visual exactamente. Una sola medida (el ranking) explicaba el 94% del tiempo total; optimizar las otras tres apenas cambiaba la experiencia del usuario. La regla general aplicada: cuando una medida itera fila por fila sobre una tabla completa (FILTER + ALL), buscar la función nativa equivalente (RANKX, TOPN) que el motor de almacenamiento puede resolver de forma más directa. Los datos y tiempos son sintéticos, construidos para ilustrar el proceso — no proceden de ningún cliente real.</p>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">No empecé por el DAX sino midiendo. Una sola medida, el ranking, se llevaba el 94 % del tiempo; optimizar las otras tres casi no se notaba. Cuando una medida recorre una tabla entera con FILTER + ALL, busco la función que el motor de almacenamiento resuelve directamente, como RANKX o TOPN.</p>
   </div>
 
-  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI</footer>
 
 </div>
 </body>

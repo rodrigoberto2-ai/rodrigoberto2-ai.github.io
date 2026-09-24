@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartera de Proyectos · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF1F4; --surface:#FFFFFF; --surface-2:#F5F7F9;
+    --ink:#1A222B; --ink-soft:#57626D; --ink-faint:#8B96A0;
+    --accent:#1E6B5C; --accent-ink:#154F44; --accent-soft:#D9ECE7;
+    --line:#DADFE4;
+    --pg:#336791; --py:#B8860B; --pbi:#C9A100; --fab:#117865;
+    --good:#3E8A5C; --warn:#B4790E; --bad:#C13B3B;
+    --shadow: 0 1px 2px rgba(20,25,30,.05), 0 4px 14px rgba(20,25,30,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161C; --surface:#1A1F26; --surface-2:#20262D;
+      --ink:#E7EBEF; --ink-soft:#A2ACB6; --ink-faint:#6B747E;
+      --accent:#5FC0A8; --accent-ink:#8FD6C4; --accent-soft:#193A33;
+      --line:#2C333B;
+      --pg:#7FA8CF; --py:#E0B44A; --pbi:#E8C640; --fab:#4FC1A6;
+      --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161C; --surface:#1A1F26; --surface-2:#20262D;
+    --ink:#E7EBEF; --ink-soft:#A2ACB6; --ink-faint:#6B747E;
+    --accent:#5FC0A8; --accent-ink:#8FD6C4; --accent-soft:#193A33;
+    --line:#2C333B;
+    --pg:#7FA8CF; --py:#E0B44A; --pbi:#E8C640; --fab:#4FC1A6;
+    --good:#5FBE82; --warn:#E0A93E; --bad:#E2726B;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  .page{ max-width:1000px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
+  h1,h2,h3{ font-weight:700; margin:0; text-wrap:balance; }
+
+  .back{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); text-decoration:none; }
+  .back:hover{ color:var(--accent-ink); }
+
+  .masthead{ display:flex; flex-direction:column; gap:3px; }
+  .mast-top{ display:flex; align-items:center; gap:10px; }
+  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:11.5px; color:var(--accent); border:1px solid var(--accent); width:36px; height:26px; display:flex; align-items:center; justify-content:center; flex:none; }
+  .kicker{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-size:27px; letter-spacing:-.005em; }
+  .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:74ch; }
+  .repo-link{ display:inline-flex; align-items:center; gap:8px; margin-top:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); text-decoration:none; font-size:13px; font-weight:600; padding:7px 14px; border-radius:6px; width:fit-content; }
+  .repo-link:hover{ border-color:var(--accent); color:var(--accent-ink); }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:3px; }
+  .section-head .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); font-weight:600; }
+  .section-head h2{ font-size:17px; font-weight:600; }
+  .section-note{ font-size:13px; color:var(--ink-soft); margin:-10px 0 0; max-width:78ch; }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
+  .card h3{ font-size:13px; font-weight:600; margin-bottom:10px; }
+
+  .pbi-wrap{ display:flex; flex-direction:column; gap:8px; }
+  /* lienzo 16:9 de Power BI + barra inferior de navegación (~36px) */
+  .pbi-frame{ position:relative; width:100%; padding-top:calc(56.25% + 36px); background:var(--surface); border:1px solid var(--line); border-radius:4px; overflow:hidden; box-shadow:var(--shadow); }
+  .pbi-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+  .shots{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+  .shots figure{ margin:0; border:1px solid var(--line); border-radius:4px; overflow:hidden; }
+  .shots img{ display:block; width:100%; height:auto; }
+  .shots figcaption{ font-size:11.5px; color:var(--ink-faint); padding:6px 10px; border-top:1px solid var(--line); background:var(--surface-2); }
+  .code{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; white-space:pre; overflow-x:auto; color:var(--ink); line-height:1.6; margin:0; }
+  .code .kw{ color:var(--accent-ink); font-weight:600; }
+  .code .cm{ color:var(--ink-faint); }
+  .code .st{ color:var(--warn); }
+
+  .perf{ display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:stretch; }
+  .perf .box{ border:1px solid var(--line); border-radius:8px; padding:12px 14px; background:var(--surface-2); }
+  .perf .label{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); }
+  .perf .value{ font-size:26px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .perf .plan{ font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-soft); }
+  .perf .arrow{ display:flex; align-items:center; font-size:22px; color:var(--ink-faint); }
+
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th{ text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); font-weight:600; border-bottom:2px solid var(--line); padding:5px 8px; }
+  td{ padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:last-child td{ border-bottom:none; }
+
+  .flow svg text{ font-family:"IBM Plex Mono", monospace; }
+
+  footer{ text-align:center; font-size:11.5px; color:var(--ink-faint); padding-top:4px; }
+
+  @media (max-width:680px){
+    .perf{ grid-template-columns:1fr; }
+    .shots{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Volver al portfolio</a>
+
+  <div class="masthead">
+    <div class="mast-top">
+      <span class="ticker">PM</span>
+      <span class="kicker">Portfolio · Caso de BI · PostgreSQL · Python · Power BI</span>
+    </div>
+    <h1>Cuadro de Mando de Cartera de Proyectos — Transformación Digital</h1>
+    <p>Seguimiento de 60 proyectos de TI: coste frente a presupuesto, hitos, semáforo y velocidad de los equipos Scrum. Va de la base de datos al informe. Datos sintéticos generados con Python.</p>
+    <a class="repo-link" id="repo-link" href="https://github.com/rodrigoberto2-ai/cartera-proyectos-bi" target="_blank" rel="noopener">Código en GitHub →</a>
+  </div>
+
+  <!-- 01 · Informe -->
+  <div class="section-head"><span class="num">01</span><h2>El informe</h2></div>
+  <p class="section-note">Una página para dirección (semáforo y coste) y otra para el jefe de proyecto (velocidad sprint a sprint).</p>
+
+  <div class="pbi-wrap">
+    <div class="pbi-frame">
+      <iframe title="Informe Power BI — Cartera de Proyectos" src="https://app.powerbi.com/view?r=eyJrIjoiN2JkZTZhN2MtZmRmZC00Y2M0LWFlNGUtNjg4ODlkOWM5N2QyIiwidCI6ImFiMTUzNmU4LWVkYzgtNDE4OC1iM2U3LWNkMjU3MDZiODdlMCJ9&pageName=a12dc0d2106a6ab753ed" frameborder="0" allowfullscreen="true" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <!-- 02 · Flujo -->
+  <div class="section-head"><span class="num">02</span><h2>El flujo de datos</h2></div>
+
+  <div class="card flow">
+    <svg viewBox="0 0 940 170" width="100%" role="img" aria-label="Flujo: Python genera CSV, Python valida y carga en PostgreSQL, las vistas SQL alimentan Power BI">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-faint)"/></marker></defs>
+
+      <rect x="4" y="40" width="150" height="70" rx="6" fill="var(--surface-2)" stroke="var(--py)" stroke-width="1.5"/>
+      <text x="79" y="68" font-size="11" font-weight="600" text-anchor="middle" fill="var(--ink)">generar_datos.py</text>
+      <text x="79" y="86" font-size="9.5" text-anchor="middle" fill="var(--ink-soft)">5 CSV · 256k filas</text>
+
+      <rect x="194" y="40" width="160" height="70" rx="6" fill="var(--surface-2)" stroke="var(--py)" stroke-width="1.5"/>
+      <text x="274" y="68" font-size="11" font-weight="600" text-anchor="middle" fill="var(--ink)">cargar_postgres.py</text>
+      <text x="274" y="86" font-size="9.5" text-anchor="middle" fill="var(--ink-soft)">valida → COPY</text>
+
+      <rect x="394" y="20" width="250" height="110" rx="6" fill="var(--surface-2)" stroke="var(--pg)" stroke-width="1.5"/>
+      <text x="519" y="42" font-size="11" font-weight="600" text-anchor="middle" fill="var(--pg)">PostgreSQL · esquema cartera</text>
+      <text x="410" y="66" font-size="9.5" fill="var(--ink-soft)">5 tablas + claves + CHECK</text>
+      <text x="410" y="86" font-size="9.5" fill="var(--ink-soft)">vw_estado_proyecto</text>
+      <text x="410" y="102" font-size="9.5" fill="var(--ink-soft)">vw_velocidad_sprint</text>
+      <text x="410" y="118" font-size="9.5" fill="var(--ink-soft)">vw_coste_mensual</text>
+
+      <rect x="684" y="40" width="130" height="70" rx="6" fill="var(--surface-2)" stroke="var(--pbi)" stroke-width="1.5"/>
+      <text x="749" y="68" font-size="11" font-weight="600" text-anchor="middle" fill="var(--ink)">Power BI</text>
+      <text x="749" y="86" font-size="9.5" text-anchor="middle" fill="var(--ink-soft)">2 páginas</text>
+
+      <text x="878" y="72" font-size="9.5" text-anchor="middle" fill="var(--ink-soft)">Dirección</text>
+      <text x="878" y="88" font-size="9.5" text-anchor="middle" fill="var(--ink-soft)">Jefes de</text>
+      <text x="878" y="100" font-size="9.5" text-anchor="middle" fill="var(--ink-soft)">proyecto</text>
+
+      <line x1="154" y1="75" x2="190" y2="75" stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+      <line x1="354" y1="75" x2="390" y2="75" stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+      <line x1="644" y1="75" x2="680" y2="75" stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+      <line x1="814" y1="75" x2="840" y2="75" stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+
+      <text x="274" y="150" font-size="9.5" text-anchor="middle" fill="var(--bad)">si falla una validación, no se carga nada</text>
+    </svg>
+  </div>
+
+  <!-- 03 · Base de datos -->
+  <div class="section-head"><span class="num">03</span><h2>KPIs en SQL, no en DAX</h2></div>
+  <p class="section-note">El semáforo se calcula en una vista de PostgreSQL. Así da lo mismo en cualquier informe y se puede comprobar con una consulta.</p>
+
+  <div class="card">
+    <h3>vw_estado_proyecto (extracto)</h3>
+<pre class="code"><span class="kw">WITH</span> coste <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> proyecto_id, <span class="kw">SUM</span>(coste) <span class="kw">AS</span> coste_real
+    <span class="kw">FROM</span> imputaciones <span class="kw">GROUP BY</span> proyecto_id
+),
+h <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> proyecto_id,
+           <span class="kw">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> fecha_real &gt; fecha_plan + 7) <span class="kw">AS</span> hitos_con_retraso,  <span class="cm">-- 1 semana de tolerancia</span>
+           <span class="kw">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> fecha_real <span class="kw">IS NULL</span>
+                              <span class="kw">AND</span> fecha_plan &lt; <span class="kw">DATE</span> <span class="st">'2026-09-21'</span>) <span class="kw">AS</span> hitos_vencidos
+    <span class="kw">FROM</span> hitos <span class="kw">GROUP BY</span> proyecto_id
+)
+<span class="kw">SELECT</span> p.codigo, p.presupuesto, co.coste_real,
+       <span class="kw">ROUND</span>(co.coste_real / p.presupuesto - 1, 4) <span class="kw">AS</span> desviacion_coste,
+       <span class="kw">CASE</span>
+           <span class="kw">WHEN</span> co.coste_real / p.presupuesto &gt; 1.10 <span class="kw">OR</span> h.hitos_vencidos &gt;= 2 <span class="kw">THEN</span> <span class="st">'Rojo'</span>
+           <span class="kw">WHEN</span> co.coste_real / p.presupuesto &gt; 1.00 <span class="kw">OR</span> h.hitos_con_retraso &gt;= 2 <span class="kw">THEN</span> <span class="st">'Ámbar'</span>
+           <span class="kw">ELSE</span> <span class="st">'Verde'</span>
+       <span class="kw">END AS</span> semaforo
+<span class="kw">FROM</span> proyectos p
+<span class="kw">LEFT JOIN</span> coste co <span class="kw">USING</span> (proyecto_id)
+<span class="kw">LEFT JOIN</span> h        <span class="kw">USING</span> (proyecto_id);</pre>
+  </div>
+
+  <!-- 04 · Optimización -->
+  <div class="section-head"><span class="num">04</span><h2>Optimización: índice compuesto</h2></div>
+  <p class="section-note">Es la consulta que lanza el informe al filtrar un proyecto y un trimestre, sobre unas 256.000 filas. Medida con <code>EXPLAIN (ANALYZE, BUFFERS)</code>.</p>
+
+  <div class="card">
+    <div class="perf">
+      <div class="box">
+        <div class="label">Sin índice</div>
+        <div class="value" id="t-antes">75,4 ms</div>
+        <div class="plan" id="plan-antes">Parallel Seq Scan · ~252.000 filas descartadas · 3.078 páginas leídas</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <div class="label">Con índice · ≈35× más rápido</div>
+        <div class="value" id="t-despues">2,1 ms</div>
+        <div class="plan" id="plan-despues">Index Only Scan · 3.547 filas leídas · 29 páginas · Heap Fetches: 0</div>
+      </div>
+    </div>
+<pre class="code" style="margin-top:12px"><span class="cm">-- igualdad primero, rango después; INCLUDE evita volver a la tabla (index-only scan)</span>
+<span class="kw">CREATE INDEX</span> ix_imputaciones_proyecto_fecha
+    <span class="kw">ON</span> imputaciones (proyecto_id, fecha)
+    <span class="kw">INCLUDE</span> (perfil, horas, coste);</pre>
+    <div class="shots">
+      <figure><img src="../images/cartera/plan-sin-indice.png" alt="Plan en pgAdmin sin índice: Parallel Seq Scan, Execution Time 75,406 ms" loading="lazy"><figcaption>Plan real en pgAdmin · sin índice</figcaption></figure>
+      <figure><img src="../images/cartera/plan-con-indice.png" alt="Plan en pgAdmin con índice: Index Only Scan, Execution Time 2,132 ms" loading="lazy"><figcaption>Plan real en pgAdmin · con índice</figcaption></figure>
+    </div>
+  </div>
+
+  <!-- 05 · Python -->
+  <div class="section-head"><span class="num">05</span><h2>Carga con validación en Python</h2></div>
+  <p class="section-note">El script revisa duplicados, registros huérfanos y valores fuera de rango antes de cargar. Si algo falla, no carga nada: prefiero un informe de ayer a uno con datos mal.</p>
+
+  <div class="card">
+<pre class="code"><span class="kw">def</span> main():
+    datos = {t: leer(t) <span class="kw">for</span> t <span class="kw">in</span> TABLAS}
+
+    errores = validar(datos)
+    <span class="kw">if</span> errores:
+        print(<span class="st">"Validación fallida, no se carga nada:"</span>)
+        <span class="kw">for</span> e <span class="kw">in</span> errores:
+            print(<span class="st">"  -"</span>, e)
+        sys.exit(1)
+
+    cargar(datos)   <span class="cm"># COPY de las 5 tablas en una sola transacción</span></pre>
+  </div>
+
+  <!-- 06 · Fabric -->
+  <div class="section-head"><span class="num">06</span><h2>Cómo lo llevaría a Microsoft Fabric</h2></div>
+  <p class="section-note">Esto corre en local. Con Fabric lo montaría así:</p>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>Pieza en local</th><th>Equivalente en Fabric</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td>cargar_postgres.py</td><td>Dataflow Gen2 conectado a PostgreSQL con gateway</td><td>La carga queda programada y a la vista del equipo</td></tr>
+        <tr><td>Validaciones en Python</td><td>Notebook que valida antes de escribir en el Lakehouse</td><td>Se mantiene el «si falla, no se carga»</td></tr>
+        <tr><td>Ejecución manual</td><td>Data Pipeline diario con alerta si falla</td><td>Si un día no se actualiza, alguien se entera</td></tr>
+        <tr><td>Vistas vw_*</td><td>Tablas en la capa gold del Lakehouse o Warehouse</td><td>El semáforo sigue en SQL</td></tr>
+        <tr><td>Importación en Power BI</td><td>Modelo semántico en modo Direct Lake</td><td>Sin copiar datos ni programar refrescos del modelo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Decisiones -->
+  <div class="card">
+    <h3>Dos cosas que cambié al ver los primeros resultados</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0 0 8px;"><b style="color:var(--ink)">Desviación solo en proyectos cerrados.</b> Al principio todos los sectores salían por debajo de presupuesto. Era engañoso: los proyectos en curso todavía no han gastado lo suyo. Mirando solo los cerrados, Defensa y Transporte tienen sobrecoste.</p>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;"><b style="color:var(--ink)">Una semana de margen en los hitos.</b> Contando cualquier retraso de un día, el 65 % de la cartera salía en ámbar, y así el semáforo no ayuda a priorizar. Con 7 días de margen quedan 33 en verde, 19 en ámbar y 8 en rojo.</p>
+  </div>
+
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI</footer>
+
+</div>
+</body>
+</html>

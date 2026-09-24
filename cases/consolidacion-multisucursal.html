@@ -104,7 +104,7 @@
       <span class="kicker">Portfolio · Caso de BI</span>
     </div>
     <h1>Consolidación Multi-Sucursal con Power Query</h1>
-    <p>Ejemplo con datos sintéticos — combinar archivos de ventas de distintas sucursales, cada uno con formato ligeramente distinto, en una tabla única y limpia lista para el modelo.</p>
+    <p>Datos sintéticos. Archivos de ventas de varias sucursales, cada uno con un formato algo distinto, unidos en una tabla limpia para el modelo.</p>
   </div>
 
   <div class="before-after">
@@ -170,7 +170,7 @@
 
   <div class="section">
     <div class="section-head"><h2>Detrás de la consulta</h2></div>
-    <p class="section-note">Fragmento del código M generado (editable a mano cuando el editor visual no alcanza).</p>
+    <p class="section-note">Parte del código M. Lo edito a mano cuando el editor visual no llega.</p>
   </div>
 
   <div class="card">
@@ -187,10 +187,10 @@
 
   <div class="card">
     <h3>ENFOQUE</h3>
-    <p style="font-size:13px; color:var(--ink-soft); margin:0;">Consulta parametrizada a nivel de carpeta (no archivo por archivo), para que un mes nuevo solo signifique añadir un CSV, no editar la consulta. La limpieza de nombres va antes del merge con la dimensión, no después — así el merge no falla silenciosamente por una variante no reconocida. Los datos son sintéticos, generados para este caso — no proceden de ningún cliente real.</p>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">La consulta lee la carpeta entera, no archivo por archivo: un mes nuevo es solo un CSV más. Los nombres se limpian antes del merge con la dimensión, porque si no, una variante que no reconoce se pierde sin dar error.</p>
   </div>
 
-  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI</footer>
 
 </div>
 </body>

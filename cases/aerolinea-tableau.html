@@ -127,7 +127,7 @@
       <span class="kicker">Portfolio · Caso de BI · Tableau</span>
     </div>
     <h1>Panel de Aerolínea — Operaciones, Ingresos, Mantenimiento y Experiencia</h1>
-    <p>Workbook real construido en Tableau y publicado en Tableau Public, con 4 paneles: operaciones (OTP y ocupación por ruta), ingresos, mantenimiento y experiencia del pasajero. Es interactivo: cambia de panel con las pestañas superiores y pasa el cursor por los gráficos aquí mismo.</p>
+    <p>Workbook hecho en Tableau y publicado en Tableau Public, con 4 paneles: operaciones, ingresos, mantenimiento y experiencia del pasajero. Se puede usar aquí mismo, con las pestañas de arriba. Datos sintéticos.</p>
   </div>
 
   <div class="viz-outer" id="viz-outer">
@@ -141,7 +141,7 @@
 
   <div class="section">
     <div class="section-head"><h2>Detrás del panel</h2></div>
-    <p class="section-note">Campos calculados y LOD expressions — sintaxis nativa de Tableau, no DAX.</p>
+    <p class="section-note">Campos calculados y LOD en Tableau.</p>
   </div>
 
   <div class="behind-grid">
@@ -194,10 +194,10 @@
 
   <div class="card">
     <h3>ENFOQUE</h3>
-    <p style="font-size:13px; color:var(--ink-soft); margin:0;">El turnaround en tierra es la métrica que más se presta a confusión si se mide mal: un promedio simple por vuelo se distorsiona por outliers (mantenimiento no programado, meteorología). Por eso usé una LOD expression fija por aeropuerto — da una base estable para comparar hubs entre sí, sin que el filtro de fecha o ruta la altere fila por fila. El OTP se define con margen de 15 minutos porque es el estándar habitual del sector, no una llegada exacta al minuto. Los datos son sintéticos, generados para este caso — no proceden de ninguna aerolínea real.</p>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0;">Un promedio simple por vuelo distorsiona el turnaround: un mantenimiento imprevisto o un día de mal tiempo lo disparan. Lo calculé con un FIXED por aeropuerto para comparar hubs sin que los filtros de fecha o ruta lo cambien. Para el OTP usé el margen de 15 minutos, que es el estándar del sector.</p>
   </div>
 
-  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI · caso construido para portfolio</footer>
+  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI</footer>
 
 </div>
 
