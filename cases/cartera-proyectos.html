@@ -121,6 +121,13 @@
     </div>
   </div>
 
+  <div class="card">
+    <h3>Asistente de IA junto al informe</h3>
+    <p class="section-note" style="margin:0 0 8px">También le añadí un asistente para preguntar a los datos en lenguaje natural, por ejemplo «¿cuál fue el coste total en junio?». La IA convierte la pregunta en una consulta SQL sobre las mismas vistas de PostgreSQL, la base de datos devuelve el número y la IA redacta la respuesta. Así lo que dice el asistente cuadra siempre con el informe.</p>
+    <p class="section-note" style="margin:0 0 10px">Trabaja con un usuario de PostgreSQL de solo lectura que solo ve las tres vistas, y antes de ejecutar nada se comprueba que la consulta es un único SELECT. Enseña el SQL que ha generado y los tokens de cada pregunta. Corre en local con Streamlit y Gemini, y también funciona con un modelo local (Ollama) para que los datos no salgan del equipo.</p>
+    <a class="repo-link" href="https://github.com/rodrigoberto2-ai/cartera-proyectos-bi/tree/main/asistente" target="_blank" rel="noopener">Ver el código del asistente →</a>
+  </div>
+
   <!-- 02 · Flujo -->
   <div class="section-head"><span class="num">02</span><h2>El flujo de datos</h2></div>
 
