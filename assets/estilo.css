@@ -138,3 +138,23 @@ tr:last-child td{ border-bottom:none; }
   .shots{ grid-template-columns:1fr; }
   .top nav{ gap:14px; }
 }
+
+/* flujo de datos en pasos */
+.pasos{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4, 1fr); border-top:2px solid var(--ink); }
+.pasos li{ padding:18px 18px 4px 0; display:flex; flex-direction:column; gap:6px; }
+.pasos li + li{ padding-left:18px; border-left:1px solid var(--line); }
+.pasos .paso-n{ font-size:13px; font-weight:800; color:var(--accent); }
+.pasos strong{ font-size:16px; font-weight:800; }
+.pasos span:last-child{ color:var(--ink-soft); font-size:14.5px; }
+
+/* comparación antes / después */
+.resultado{ font-size:20px; margin:0 0 14px; }
+.resultado strong{ font-weight:800; }
+table.comparar td{ font-size:15px; }
+table.comparar td:first-child{ font-weight:700; }
+table.comparar td.num{ font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+
+@media (max-width:760px){
+  .pasos{ grid-template-columns:1fr; }
+  .pasos li + li{ padding-left:0; border-left:none; border-top:1px solid var(--line); }
+}
