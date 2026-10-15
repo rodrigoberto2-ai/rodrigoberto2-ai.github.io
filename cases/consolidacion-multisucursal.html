@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Consolidación Multi-Sucursal · Rodrigo Pinheiro Berto</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<title>Consolidación multisucursal con Power Query · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
 <style>
   :root{
     --bg:#F0F2EE; --surface:#FFFFFF; --surface-2:#F6F7F4;
@@ -30,22 +31,22 @@
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
   }
   *{box-sizing:border-box;}
-  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Manrope", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
   .page{ max-width:980px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
-  h1,h2,h3{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
+  h1,h2,h3{ font-family:"Manrope", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
 
-  .back{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); text-decoration:none; }
+  .back{ font-family:"Manrope", ui-monospace, monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); text-decoration:none; }
   .back:hover{ color:var(--accent-ink); }
 
   .masthead{ display:flex; flex-direction:column; gap:3px; }
   .mast-top{ display:flex; align-items:center; gap:10px; }
-  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:11.5px; color:var(--accent); border:1px solid var(--accent); width:36px; height:26px; display:flex; align-items:center; justify-content:center; flex:none; }
-  .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
-  .masthead h1{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-size:27px; font-weight:700; letter-spacing:-.005em; }
+  .ticker{ font-family:"Manrope", monospace; font-weight:700; font-size:11.5px; color:var(--accent); border:1px solid var(--accent); width:36px; height:26px; display:flex; align-items:center; justify-content:center; flex:none; }
+  .kicker{ font-family:"Manrope", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-family:"Manrope", "Segoe UI", sans-serif; font-size:27px; font-weight:700; letter-spacing:-.005em; }
   .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:70ch; }
 
   .pq-window{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; }
-  .pq-bar{ background:var(--surface-2); border-bottom:1px solid var(--line); padding:8px 14px; font-size:11.5px; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace; overflow-x:auto; white-space:nowrap; }
+  .pq-bar{ background:var(--surface-2); border-bottom:1px solid var(--line); padding:8px 14px; font-size:11.5px; color:var(--ink-soft); font-family:"Manrope",monospace; overflow-x:auto; white-space:nowrap; }
   .pq-body{ display:grid; grid-template-columns:150px 1fr 190px; min-height:320px; }
   .pq-queries{ border-right:1px solid var(--line); padding:10px 0; background:var(--surface-2); }
   .pq-queries .grp{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); padding:4px 12px; }
@@ -55,7 +56,7 @@
   .pq-queries .q.active i{ background:var(--accent); }
 
   .pq-main{ padding:12px 14px; overflow-x:auto; }
-  .pq-formula{ font-family:"IBM Plex Mono",monospace; font-size:11px; background:var(--surface-2); border:1px solid var(--line); padding:6px 10px; margin-bottom:10px; color:var(--ink-soft); overflow-x:auto; white-space:nowrap; }
+  .pq-formula{ font-family:"JetBrains Mono",monospace; font-size:11px; background:var(--surface-2); border:1px solid var(--line); padding:6px 10px; margin-bottom:10px; color:var(--ink-soft); overflow-x:auto; white-space:nowrap; }
   table.pq{ width:100%; border-collapse:collapse; font-size:11.5px; }
   table.pq th{ background:var(--surface-2); text-align:left; font-weight:600; padding:5px 8px; border:1px solid var(--line); color:var(--ink); }
   table.pq td{ padding:5px 8px; border:1px solid var(--line); color:var(--ink-soft); font-variant-numeric:tabular-nums; }
@@ -80,7 +81,7 @@
 
   .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
   .card h3{ font-size:13px; font-weight:600; margin-bottom:10px; color:var(--ink); }
-  .m-block{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; white-space:pre-wrap; color:var(--ink); line-height:1.6; overflow-x:auto; }
+  .m-block{ font-family:"JetBrains Mono", ui-monospace, monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; white-space:pre-wrap; color:var(--ink); line-height:1.6; overflow-x:auto; }
   .m-block .kw{ color:var(--accent-ink); font-weight:600; }
   .m-block .cm{ color:var(--ink-faint); }
 
@@ -92,18 +93,32 @@
     .before-after{ grid-template-columns:1fr; }
   }
 </style>
+<style>
+  /* estilo nuevo encima del de la página: tipografía, cabecera y secciones */
+  body{ background:var(--surface); font-family:"Manrope", system-ui, sans-serif; line-height:1.6; }
+  h1,h2,h3{ font-family:"Manrope", system-ui, sans-serif; letter-spacing:-.02em; }
+  .page{ max-width:1040px; padding:0 24px 40px; gap:22px; }
+  .section-head{ border:none; padding:0; margin-top:30px; display:flex; gap:14px; align-items:baseline; }
+  .section-head .num{ font-family:"Manrope", sans-serif; font-size:15px; font-weight:700; color:var(--ink-faint); letter-spacing:0; }
+  .section-head h2{ font-size:26px; font-weight:800; }
+  .section-note{ font-size:16px; color:var(--ink-soft); margin:0; max-width:70ch; }
+  .card{ border-radius:6px; box-shadow:none; }
+  .card h3{ font-size:17px; font-weight:800; }
+  .caso-cab .herr{ color:var(--accent); }
+</style>
 </head>
 <body>
 <div class="page">
 
-  <a class="back" href="../index.html">← Volver al portfolio</a>
+  <header class="top">
+    <a class="marca" href="../index.html">Rodrigo P. Berto</a>
+    <nav><a href="../index.html#proyectos">Proyectos</a><a href="../index.html#contacto">Contacto</a></nav>
+  </header>
 
-  <div class="masthead">
-    <div class="mast-top">
-      <span class="ticker">PQ</span>
-      <span class="kicker">Portfolio · Caso de BI</span>
-    </div>
-    <h1>Consolidación Multi-Sucursal con Power Query</h1>
+  <div class="caso-cab">
+    <a class="volver" href="../index.html#proyectos">← Volver a proyectos</a>
+    <div class="herr">Power Query · Código M</div>
+    <h1>Consolidación multisucursal con Power Query</h1>
     <p>Datos sintéticos. Archivos de ventas de varias sucursales, cada uno con un formato algo distinto, unidos en una tabla limpia para el modelo.</p>
   </div>
 
@@ -123,13 +138,13 @@
         <li>Una consulta que se actualiza sola al añadir un archivo nuevo a la carpeta</li>
         <li>Nombres de sucursal estandarizados con una tabla de referencia</li>
         <li>Una columna de fecha, un tipo de dato, sin ambigüedad</li>
-        <li>Formato largo (una fila por sucursal/mes) — listo para relacionar con el modelo</li>
+        <li>Formato largo (una fila por sucursal/mes), listo para relacionar con el modelo</li>
       </ul>
     </div>
   </div>
 
   <div class="pq-window">
-    <div class="pq-bar">Editor de Power Query — fx = Tabla.TransformColumnTypes(#"Filas filtradas", {&#123;"Fecha", type date&#125;})</div>
+    <div class="pq-bar">Editor de Power Query, fx = Tabla.TransformColumnTypes(#"Filas filtradas", {&#123;"Fecha", type date&#125;})</div>
     <div class="pq-body">
       <div class="pq-queries">
         <div class="grp">Consultas</div>
@@ -174,7 +189,7 @@
   </div>
 
   <div class="card">
-    <h3>CÓDIGO M — NORMALIZACIÓN DE SUCURSAL</h3>
+    <h3>CÓDIGO M, NORMALIZACIÓN DE SUCURSAL</h3>
     <div class="m-block"><span class="cm">// Estandariza variantes de escritura antes de combinar con Dim_Sucursal</span>
 <span class="kw">let</span>
     Origen = <span class="kw">Table</span>.TransformColumns(#"Encabezados promovidos",
@@ -190,7 +205,7 @@
     <p style="font-size:13px; color:var(--ink-soft); margin:0;">La consulta lee la carpeta entera, no archivo por archivo: un mes nuevo es solo un CSV más. Los nombres se limpian antes del merge con la dimensión, porque si no, una variante que no reconoce se pierde sin dar error.</p>
   </div>
 
-  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI</footer>
+  <footer class="pie"><span>Rodrigo Pinheiro Berto · Data Analyst / BI · Madrid</span><a href="mailto:rodrigoberto2@gmail.com">rodrigoberto2@gmail.com</a></footer>
 
 </div>
 </body>

@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel de Logística — Entregas y Flota · Rodrigo Pinheiro Berto</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<title>Panel de logística: entregas y flota · Rodrigo Pinheiro Berto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
 <style>
   :root{
     --bg:#EEF0EC; --surface:#FFFFFF; --surface-2:#F5F6F3;
@@ -34,23 +35,23 @@
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.4);
   }
   *{box-sizing:border-box;}
-  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Manrope", "Segoe UI", ui-sans-serif, sans-serif; line-height:1.5; }
   .page{ max-width:1000px; margin:0 auto; padding:26px 22px 60px; display:flex; flex-direction:column; gap:22px; }
-  h1,h2,h3{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
+  h1,h2,h3{ font-family:"Manrope", "Segoe UI", sans-serif; font-weight:700; margin:0; text-wrap:balance; }
 
-  .back{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); text-decoration:none; }
+  .back{ font-family:"Manrope", ui-monospace, monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); text-decoration:none; }
   .back:hover{ color:var(--accent-ink); }
 
   .masthead{ display:flex; flex-direction:column; gap:3px; }
   .mast-top{ display:flex; align-items:center; gap:10px; }
-  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:11.5px; color:var(--accent); border:1px solid var(--accent); width:36px; height:26px; display:flex; align-items:center; justify-content:center; flex:none; }
-  .kicker{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
-  .masthead h1{ font-family:"Source Sans 3", "Segoe UI", sans-serif; font-size:27px; font-weight:700; letter-spacing:-.005em; }
+  .ticker{ font-family:"Manrope", monospace; font-weight:700; font-size:11.5px; color:var(--accent); border:1px solid var(--accent); width:36px; height:26px; display:flex; align-items:center; justify-content:center; flex:none; }
+  .kicker{ font-family:"Manrope", ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:600; }
+  .masthead h1{ font-family:"Manrope", "Segoe UI", sans-serif; font-size:27px; font-weight:700; letter-spacing:-.005em; }
   .masthead p{ margin:0; color:var(--ink-soft); font-size:13.5px; max-width:72ch; }
 
   /* ---- Tableau-style workbook shell ---- */
   .workbook{ background:var(--surface); border:1px solid var(--line); border-radius:2px; overflow:hidden; box-shadow:var(--shadow); }
-  .wb-toolbar{ background:var(--surface-2); border-bottom:1px solid var(--line); padding:8px 14px; display:flex; align-items:center; justify-content:space-between; font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-faint); }
+  .wb-toolbar{ background:var(--surface-2); border-bottom:1px solid var(--line); padding:8px 14px; display:flex; align-items:center; justify-content:space-between; font-family:"Manrope", monospace; font-size:10.5px; color:var(--ink-faint); }
   .wb-body{ padding:16px 18px; display:flex; flex-direction:column; gap:14px; }
 
   .kpi-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
@@ -87,7 +88,7 @@
   .status.bad{ color:var(--bad); } .status.bad::before{ background:var(--bad); }
 
   .sheet-tabs{ display:flex; gap:2px; padding:8px 12px 0; background:var(--surface-2); border-top:1px solid var(--line); }
-  .sheet-tabs span{ font-family:"IBM Plex Mono", monospace; font-size:10px; padding:6px 12px; background:var(--surface); border:1px solid var(--line); border-bottom:none; border-radius:3px 3px 0 0; color:var(--ink-faint); }
+  .sheet-tabs span{ font-family:"Manrope", monospace; font-size:10px; padding:6px 12px; background:var(--surface); border:1px solid var(--line); border-bottom:none; border-radius:3px 3px 0 0; color:var(--ink-faint); }
   .sheet-tabs span.active{ color:var(--accent-ink); font-weight:700; border-bottom:2px solid var(--surface); margin-bottom:-1px; }
 
   .section-head{ display:flex; align-items:baseline; gap:10px; border-bottom:1px solid var(--line); padding-bottom:3px; }
@@ -97,7 +98,7 @@
   .behind-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   .card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); padding:16px 18px; }
   .card h3{ font-size:13px; font-weight:600; margin-bottom:10px; color:var(--ink); }
-  .calc-block{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; white-space:pre-wrap; color:var(--ink); line-height:1.6; }
+  .calc-block{ font-family:"JetBrains Mono", ui-monospace, monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; white-space:pre-wrap; color:var(--ink); line-height:1.6; }
   .calc-block .kw{ color:var(--accent-ink); font-weight:600; }
   .calc-block .cm{ color:var(--ink-faint); }
   .calc-block .name{ color:var(--t-orange); font-weight:600; }
@@ -110,18 +111,32 @@
     .behind-grid{ grid-template-columns:1fr; }
   }
 </style>
+<style>
+  /* estilo nuevo encima del de la página: tipografía, cabecera y secciones */
+  body{ background:var(--surface); font-family:"Manrope", system-ui, sans-serif; line-height:1.6; }
+  h1,h2,h3{ font-family:"Manrope", system-ui, sans-serif; letter-spacing:-.02em; }
+  .page{ max-width:1040px; padding:0 24px 40px; gap:22px; }
+  .section-head{ border:none; padding:0; margin-top:30px; display:flex; gap:14px; align-items:baseline; }
+  .section-head .num{ font-family:"Manrope", sans-serif; font-size:15px; font-weight:700; color:var(--ink-faint); letter-spacing:0; }
+  .section-head h2{ font-size:26px; font-weight:800; }
+  .section-note{ font-size:16px; color:var(--ink-soft); margin:0; max-width:70ch; }
+  .card{ border-radius:6px; box-shadow:none; }
+  .card h3{ font-size:17px; font-weight:800; }
+  .caso-cab .herr{ color:var(--accent); }
+</style>
 </head>
 <body>
 <div class="page">
 
-  <a class="back" href="../index.html">← Volver al portfolio</a>
+  <header class="top">
+    <a class="marca" href="../index.html">Rodrigo P. Berto</a>
+    <nav><a href="../index.html#proyectos">Proyectos</a><a href="../index.html#contacto">Contacto</a></nav>
+  </header>
 
-  <div class="masthead">
-    <div class="mast-top">
-      <span class="ticker">LG</span>
-      <span class="kicker">Portfolio · Caso de BI · Tableau</span>
-    </div>
-    <h1>Panel de Logística — Entregas y Flota</h1>
+  <div class="caso-cab">
+    <a class="volver" href="../index.html#proyectos">← Volver a proyectos</a>
+    <div class="herr">Tableau · LOD</div>
+    <h1>Panel de logística: entregas y flota</h1>
     <p>Datos sintéticos, en el estilo propio de Tableau. Entregas a tiempo, coste por transportista y tiempo de tránsito.</p>
   </div>
 
@@ -158,10 +173,10 @@
             <line x1="26" y1="14" x2="26" y2="130" stroke="var(--line)" stroke-width="1"/>
             <line x1="26" y1="130" x2="580" y2="130" stroke="var(--line)" stroke-width="1"/>
             <polyline points="26,60 96,55 166,48 236,52 306,40 376,35 446,30 516,22 580,18" fill="none" stroke="var(--t-blue)" stroke-width="2.4"/>
-            <g><circle cx="26" cy="60" r="7" fill="transparent"/><circle cx="26" cy="60" r="3" fill="var(--t-blue)"/><title>Sem 1 — 87,2%</title></g>
-            <g><circle cx="236" cy="52" r="7" fill="transparent"/><circle cx="236" cy="52" r="3" fill="var(--t-blue)"/><title>Sem 4 — 88,6%</title></g>
-            <g><circle cx="446" cy="30" r="7" fill="transparent"/><circle cx="446" cy="30" r="3" fill="var(--t-blue)"/><title>Sem 7 — 90,9%</title></g>
-            <g><circle cx="580" cy="18" r="7" fill="transparent"/><circle cx="580" cy="18" r="4" fill="var(--t-blue)"/><title>Sem 9 — 91,4% (último dato)</title></g>
+            <g><circle cx="26" cy="60" r="7" fill="transparent"/><circle cx="26" cy="60" r="3" fill="var(--t-blue)"/><title>Sem 1, 87,2%</title></g>
+            <g><circle cx="236" cy="52" r="7" fill="transparent"/><circle cx="236" cy="52" r="3" fill="var(--t-blue)"/><title>Sem 4, 88,6%</title></g>
+            <g><circle cx="446" cy="30" r="7" fill="transparent"/><circle cx="446" cy="30" r="3" fill="var(--t-blue)"/><title>Sem 7, 90,9%</title></g>
+            <g><circle cx="580" cy="18" r="7" fill="transparent"/><circle cx="580" cy="18" r="4" fill="var(--t-blue)"/><title>Sem 9, 91,4% (último dato)</title></g>
             <text x="26" y="146" font-size="9" fill="var(--ink-faint)">Sem 1</text>
             <text x="550" y="146" font-size="9" fill="var(--ink-faint)">Sem 9</text>
           </svg>
@@ -171,16 +186,16 @@
           <svg viewBox="0 0 260 160" width="100%" height="160">
             <text x="4" y="18" font-size="10" fill="var(--ink)">TransRápido</text>
             <rect x="4" y="24" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="24" width="220" height="14" fill="var(--t-blue)"><title>TransRápido — 6.840 envíos</title></rect>
+            <rect x="4" y="24" width="220" height="14" fill="var(--t-blue)"><title>TransRápido, 6.840 envíos</title></rect>
             <text x="4" y="52" font-size="10" fill="var(--ink)">LogiExpress</text>
             <rect x="4" y="58" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="58" width="176" height="14" fill="var(--t-orange)"><title>LogiExpress — 5.470 envíos</title></rect>
+            <rect x="4" y="58" width="176" height="14" fill="var(--t-orange)"><title>LogiExpress, 5.470 envíos</title></rect>
             <text x="4" y="86" font-size="10" fill="var(--ink)">CargaSur</text>
             <rect x="4" y="92" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="92" width="118" height="14" fill="var(--t-green)"><title>CargaSur — 3.680 envíos</title></rect>
+            <rect x="4" y="92" width="118" height="14" fill="var(--t-green)"><title>CargaSur, 3.680 envíos</title></rect>
             <text x="4" y="120" font-size="10" fill="var(--ink)">Flota Propia</text>
             <rect x="4" y="126" width="252" height="14" fill="var(--surface-2)"/>
-            <rect x="4" y="126" width="80" height="14" fill="var(--t-teal)"><title>Flota Propia — 2.430 envíos</title></rect>
+            <rect x="4" y="126" width="80" height="14" fill="var(--t-teal)"><title>Flota Propia, 2.430 envíos</title></rect>
           </svg>
         </div>
       </div>
@@ -218,20 +233,20 @@
       <h3>MODELO DE DATOS</h3>
       <svg viewBox="0 0 320 220" width="100%" height="220">
         <rect x="105" y="85" width="110" height="50" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
-        <text x="160" y="106" font-size="10.5" font-weight="600" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Hechos</text>
-        <text x="160" y="120" font-size="9.5" text-anchor="middle" fill="var(--accent-ink)" font-family="IBM Plex Mono">Envíos</text>
+        <text x="160" y="106" font-size="10.5" font-weight="600" text-anchor="middle" fill="var(--accent-ink)" font-family="Manrope">Hechos</text>
+        <text x="160" y="120" font-size="9.5" text-anchor="middle" fill="var(--accent-ink)" font-family="Manrope">Envíos</text>
 
         <rect x="10" y="10" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
-        <text x="55" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Fecha</text>
+        <text x="55" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="Manrope">Dim_Fecha</text>
 
         <rect x="220" y="10" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
-        <text x="265" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Transportista</text>
+        <text x="265" y="32" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="Manrope">Dim_Transportista</text>
 
         <rect x="10" y="174" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
-        <text x="55" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Región</text>
+        <text x="55" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="Manrope">Dim_Región</text>
 
         <rect x="220" y="174" width="90" height="36" rx="5" fill="var(--surface-2)" stroke="var(--line)"/>
-        <text x="265" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono">Dim_Ruta</text>
+        <text x="265" y="196" font-size="9.5" text-anchor="middle" fill="var(--ink)" font-family="Manrope">Dim_Ruta</text>
 
         <line x1="100" y1="35" x2="130" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
         <line x1="220" y1="35" x2="190" y2="90" stroke="var(--ink-faint)" stroke-width="1.3"/>
@@ -265,7 +280,7 @@
     <p style="font-size:13px; color:var(--ink-soft); margin:0;">El coste medio por transportista lo calculé con un FIXED para que no cambie al filtrar por región o semana, que es el error típico con una medida agregada normal. El filtro de región afecta al resto del panel mediante acciones de Tableau, pero no a esa tarjeta.</p>
   </div>
 
-  <footer>Rodrigo Pinheiro Berto · Data Analyst / BI</footer>
+  <footer class="pie"><span>Rodrigo Pinheiro Berto · Data Analyst / BI · Madrid</span><a href="mailto:rodrigoberto2@gmail.com">rodrigoberto2@gmail.com</a></footer>
 
 </div>
 
