@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cuadro de mando de cartera de proyectos · Rodrigo Pinheiro Berto</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="../assets/estilo.css?v=5">
+<link rel="stylesheet" href="../assets/estilo.css?v=6">
 </head>
 <body>
 <div class="wrap">
@@ -105,7 +105,6 @@ h <span class="kw">AS</span> (
         <tr><td>Con índice</td><td class="num" id="t-despues">2,1 ms</td><td>Index Only Scan</td><td id="plan-despues">3.547 filas, 29 páginas, sin volver a la tabla</td></tr>
       </tbody>
     </table>
-    </div>
 <pre class="code" style="margin-top:12px"><span class="cm">-- igualdad primero, rango después; INCLUDE evita volver a la tabla (index-only scan)</span>
 <span class="kw">CREATE INDEX</span> ix_imputaciones_proyecto_fecha
     <span class="kw">ON</span> imputaciones (proyecto_id, fecha)
