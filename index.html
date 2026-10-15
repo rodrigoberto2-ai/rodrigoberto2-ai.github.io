@@ -3,261 +3,139 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rodrigo Pinheiro Berto — Portfolio</title>
-<meta name="description" content="Casos de trabajo con SQL, ETL, Power BI, DAX y Power Query — Data Analyst / BI, Madrid.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap">
-<style>
-  :root{
-    --bg:#EFF1ED;
-    --surface:#FFFFFF;
-    --surface-2:#E5E8E1;
-    --ink:#14181A;
-    --ink-soft:#4E5754;
-    --ink-faint:#838D88;
-    --accent:#2F4E9E;
-    --accent-ink:#22397A;
-    --accent-soft:#DEE5F5;
-    --line:#D3D7CF;
-    --rule:#B9C0B7;
-    --shadow: 0 1px 2px rgba(20,25,22,.05), 0 14px 30px rgba(20,25,22,.09);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#0F1210; --surface:#171A17; --surface-2:#1D211D;
-      --ink:#E7EAE5; --ink-soft:#A2AAA3; --ink-faint:#69726C;
-      --accent:#7F9BE9; --accent-ink:#AEC0F3; --accent-soft:#1B2440;
-      --line:#2A2F29; --rule:#363C35;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 34px rgba(0,0,0,.5);
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#0F1210; --surface:#171A17; --surface-2:#1D211D;
-    --ink:#E7EAE5; --ink-soft:#A2AAA3; --ink-faint:#69726C;
-    --accent:#7F9BE9; --accent-ink:#AEC0F3; --accent-soft:#1B2440;
-    --line:#2A2F29; --rule:#363C35;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 34px rgba(0,0,0,.5);
-  }
-  *{box-sizing:border-box;}
-  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3", ui-sans-serif, sans-serif; line-height:1.55; }
-  .page{ max-width:900px; margin:0 auto; padding:48px 22px 70px; display:flex; flex-direction:column; gap:40px; }
-  a{ color:inherit; }
-  h1,h2{ font-family:"Source Sans 3", ui-sans-serif, sans-serif; margin:0; text-wrap:balance; }
-
-  /* ---- masthead: bio + fact sheet ---- */
-  .masthead{ display:grid; grid-template-columns:1.5fr 1fr; gap:28px; align-items:start; padding-bottom:26px; border-bottom:1px solid var(--rule); }
-  .masthead h1{ font-size:38px; font-weight:700; letter-spacing:-.01em; }
-  .role{ font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--accent-ink); letter-spacing:.1em; text-transform:uppercase; margin-top:6px; }
-  .lede{ margin:12px 0 0; color:var(--ink-soft); font-size:14.5px; max-width:52ch; }
-
-  .factsheet{ margin:2px 0 0; display:flex; flex-direction:column; gap:9px; border-left:2px solid var(--line); padding-left:14px; }
-  .factsheet div{ display:grid; grid-template-columns:76px 1fr; gap:10px; align-items:baseline; }
-  .factsheet dt{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); }
-  .factsheet dd{ margin:0; font-size:13.5px; }
-  .factsheet a{ text-decoration:none; border-bottom:1px solid var(--accent-soft); }
-  .factsheet a:hover{ border-color:var(--accent); }
-
-  /* ---- section heads ---- */
-  .section{ display:flex; flex-direction:column; gap:22px; }
-  .section-intro{ display:flex; flex-direction:column; gap:7px; padding-bottom:18px; border-bottom:1px solid var(--rule); }
-  .section-head{ display:flex; align-items:baseline; gap:10px; }
-  .section-head .num{ font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-faint); }
-  .section-head h2{ font-size:22px; font-weight:600; }
-  .section-note{ font-size:13.5px; color:var(--ink-soft); margin:0; max-width:60ch; }
-
-  /* ---- case cards ---- */
-  .cases{ display:flex; flex-direction:column; gap:14px; }
-  .case-row{ display:grid; grid-template-columns:56px 1fr auto; gap:18px; align-items:start; padding:22px; background:var(--surface); border:1px solid var(--line); border-radius:16px; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
-  a.case-row{ text-decoration:none; color:inherit; cursor:pointer; }
-  a.case-row:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--tick); }
-  a.case-row:hover .ticker{ background:var(--tick); color:#fff; }
-  .case-row:not(a){ opacity:.94; }
-
-  .ticker{ font-family:"IBM Plex Mono", monospace; font-weight:700; font-size:12.5px; color:var(--tick); border:1px solid var(--tick); width:44px; height:32px; display:flex; align-items:center; justify-content:center; letter-spacing:.02em; border-radius:8px; transition:background .15s ease, color .15s ease; }
-
-  .case-main h3{ font-family:"Source Sans 3", sans-serif; font-size:16px; font-weight:700; margin:0 0 4px; }
-  .case-main p{ font-size:13.5px; color:var(--ink-soft); margin:0; max-width:56ch; }
-  .case-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
-  .case-tags span{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-faint); display:inline-flex; align-items:center; gap:5px; }
-  .case-tags span::before{ content:""; width:6px; height:6px; background:var(--tick); flex:none; }
-
-  .case-cta{ font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--accent-ink); white-space:nowrap; align-self:center; }
-  .case-row:not(a) .case-cta{ color:var(--ink-faint); }
-
-  .thumb-wrap{ margin-top:10px; }
-  .thumb-wrap img{ width:100%; max-width:360px; display:block; border:1px solid var(--line); border-radius:10px; }
-
-  /* ---- skills ---- */
-  .skills-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 40px; }
-  .skills-col{ display:flex; flex-direction:column; }
-  .skills-col h4{ font-family:"IBM Plex Mono", monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); font-weight:600; margin:0 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line); }
-  .skills-col div{ font-size:13.5px; padding:6px 0; border-top:1px solid var(--surface-2); display:flex; align-items:baseline; gap:8px; }
-  .skills-col div:first-of-type{ border-top:none; }
-  .skills-col div::before{ content:"·"; color:var(--accent); font-weight:700; }
-
-  footer{ font-size:12px; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:18px; }
-
-  @media (max-width:640px){
-    .masthead{ grid-template-columns:1fr; }
-    .case-row{ grid-template-columns:44px 1fr; }
-    .case-cta{ grid-column:2; }
-    .skills-grid{ grid-template-columns:1fr; }
-  }
-</style>
+<title>Rodrigo Pinheiro Berto · Portfolio</title>
+<meta name="description" content="Casos de trabajo con SQL, ETL, Power BI, DAX y Tableau. Data Analyst / BI en Madrid.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/estilo.css">
 </head>
 <body>
-<div class="page">
 
-  <div class="masthead">
+<div class="wrap">
+  <header class="top">
+    <a class="marca" href="index.html">Rodrigo P. Berto</a>
+    <nav><a href="#proyectos">Proyectos</a><a href="#habilidades">Habilidades</a><a href="#contacto">Contacto</a></nav>
+  </header>
+
+  <section class="hero">
     <div>
+      <div class="rol">Data Analyst · Business Intelligence</div>
       <h1>Rodrigo Pinheiro Berto</h1>
-      <div class="role">Data Analyst · Business Intelligence</div>
-      <p class="lede">Casos de SQL, ETL, Power BI y Tableau basados en lo que he hecho en Falavinha Next, Renault Group, Hecke Import y UNINTER. Los datos son sintéticos porque no puedo publicar datos de clientes.</p>
+      <p>Trabajo con SQL, Python y Power BI para llevar el dato desde el origen hasta el informe que alguien usa para decidir. Aquí están algunos casos, con datos sintéticos porque no puedo publicar los de mis clientes.</p>
+      <div class="btns">
+        <a class="btn" href="mailto:rodrigoberto2@gmail.com">Contactar</a>
+        <a class="btn linea" href="#proyectos">Ver proyectos</a>
+      </div>
     </div>
-    <dl class="factsheet">
-      <div><dt>Ubicación</dt><dd>Madrid, España</dd></div>
-      <div><dt>Email</dt><dd><a href="mailto:rodrigoberto2@gmail.com">rodrigoberto2@gmail.com</a></dd></div>
-      <div><dt>Teléfono</dt><dd>+34 614 650 517</dd></div>
-      <div><dt>Enfoque</dt><dd>SQL · Power BI · DAX</dd></div>
-    </dl>
-  </div>
+    <div class="datos" id="contacto">
+      <div><span>Ubicación</span>Madrid, España</div>
+      <div><span>Email</span><a href="mailto:rodrigoberto2@gmail.com">rodrigoberto2@gmail.com</a></div>
+      <div><span>Teléfono</span>+34 614 650 517</div>
+      <div><span>Experiencia</span>Falavinha Next, Renault Group, Hecke Import, UNINTER</div>
+    </div>
+  </section>
+</div>
 
-  <div class="section">
-    <div class="section-intro">
-      <div class="section-head"><span class="num">01</span><h2>Proyectos</h2></div>
-      <p class="section-note">En cada caso explico cómo lo construí, no solo el resultado.</p>
+<section class="banda" id="proyectos">
+  <div class="wrap">
+    <div class="titulo-seccion">
+      <h2>Proyectos</h2>
+      <p>En cada caso cuento cómo lo construí y por qué.</p>
     </div>
 
-    <div class="cases">
-
-      <a class="case-row" href="cases/cartera-proyectos.html" style="--tick:#1E6B5C">
-        <span class="ticker">PM</span>
-        <div class="case-main">
-          <h3>Cuadro de Mando de Cartera de Proyectos — Transformación Digital</h3>
-          <p>Power BI sobre PostgreSQL con semáforo de proyectos, desviación de coste y seguimiento Scrum. Carga en Python con validación y una consulta optimizada con índices.</p>
-          <div class="case-tags"><span>PostgreSQL</span><span>Python</span><span>Power BI</span><span>Scrum</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+    <div class="rejilla">
+      <a class="proyecto destacado" href="cases/cartera-proyectos.html">
+        <span class="herr">PostgreSQL · Python · Power BI · IA</span>
+        <h3>Cuadro de mando de cartera de proyectos</h3>
+        <p>Power BI sobre PostgreSQL con semáforo de proyectos, desviación de coste y seguimiento Scrum. Carga en Python con validación, una consulta optimizada con índices y un asistente de IA para preguntar a los datos.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <a class="case-row" href="cases/aerolinea-tableau.html" style="--tick:#2C6E9E">
-        <span class="ticker">AV</span>
-        <div class="case-main">
-          <h3>Panel de Aerolínea — Operaciones, Ingresos, Mantenimiento y Experiencia</h3>
-          <p>Mi workbook de Tableau Public, incrustado: puntualidad y ocupación por ruta, ingresos, mantenimiento y experiencia del pasajero.</p>
-          <div class="case-tags"><span>Tableau Public</span><span>Interactivo</span><span>Aviación</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+      <a class="proyecto" href="cases/aerolinea-tableau.html">
+        <span class="herr">Tableau Public</span>
+        <h3>Panel de aerolínea</h3>
+        <p>Puntualidad y ocupación por ruta, ingresos, mantenimiento y experiencia del pasajero, en un workbook interactivo.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <a class="case-row" href="cases/logistica-tableau.html" style="--tick:#1F77B4">
-        <span class="ticker">LG</span>
-        <div class="case-main">
-          <h3>Panel de Logística — Entregas y Flota</h3>
-          <p>Entregas a tiempo, coste por transportista y tiempo de tránsito. Campos calculados, LOD (FIXED) y acciones de filtro.</p>
-          <div class="case-tags"><span>Tableau</span><span>LOD</span><span>Logística</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+      <a class="proyecto" href="cases/logistica-tableau.html">
+        <span class="herr">Tableau · LOD</span>
+        <h3>Panel de logística: entregas y flota</h3>
+        <p>Entregas a tiempo, coste por transportista y tiempo de tránsito. Campos calculados, LOD y acciones de filtro.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <a class="case-row" href="cases/cartera-credito.html" style="--tick:#1F5C8B">
-        <span class="ticker">CR</span>
-        <div class="case-main">
-          <h3>Cuadro de Mando — Cartera de Crédito</h3>
-          <p>Cartera de crédito con filtro por región, modelo en estrella y medidas DAX (CALCULATE, DIVIDE, SAMEPERIODLASTYEAR).</p>
-          <div class="case-tags"><span>Power BI</span><span>DAX</span><span>Modelo semántico</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+      <a class="proyecto" href="cases/cartera-credito.html">
+        <span class="herr">Power BI · DAX</span>
+        <h3>Cartera de crédito</h3>
+        <p>Filtro por región, modelo en estrella y medidas DAX con CALCULATE, DIVIDE y SAMEPERIODLASTYEAR.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <a class="case-row" href="cases/rendimiento-comercial.html" style="--tick:#5B7A3F">
-        <span class="ticker">VT</span>
-        <div class="case-main">
-          <h3>Cuadro de Mando — Rendimiento Comercial</h3>
-          <p>Ranking de vendedores con barras de progreso e inteligencia de tiempo (TOTALYTD, SAMEPERIODLASTYEAR).</p>
-          <div class="case-tags"><span>Power BI</span><span>DAX</span><span>Time intelligence</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+      <a class="proyecto" href="cases/rendimiento-comercial.html">
+        <span class="herr">Power BI · Time intelligence</span>
+        <h3>Rendimiento comercial</h3>
+        <p>Ranking de vendedores con barras de progreso e inteligencia de tiempo con TOTALYTD y SAMEPERIODLASTYEAR.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <a class="case-row" href="cases/consolidacion-multisucursal.html" style="--tick:#2E7D6B">
-        <span class="ticker">PQ</span>
-        <div class="case-main">
-          <h3>Consolidación Multi-Sucursal</h3>
-          <p>Power Query que junta archivos de varias sucursales, cada uno con su formato, en una sola tabla. Incluye el código M.</p>
-          <div class="case-tags"><span>Power Query</span><span>Código M</span><span>ETL</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+      <a class="proyecto" href="cases/consolidacion-multisucursal.html">
+        <span class="herr">Power Query · Código M</span>
+        <h3>Consolidación multisucursal</h3>
+        <p>Una consulta de Power Query que junta los archivos de varias sucursales, cada uno con su formato, en una sola tabla.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <a class="case-row" href="cases/auditoria-rendimiento-dax.html" style="--tick:#9A5B1E">
-        <span class="ticker">DX</span>
-        <div class="case-main">
-          <h3>Auditoría de Rendimiento DAX</h3>
-          <p>Un ranking lento, analizado con el Performance Analyzer y reescrito con RANKX y ALLSELECTED. De más de 8 s a menos de 1 s.</p>
-          <div class="case-tags"><span>DAX</span><span>Optimización</span><span>Performance Analyzer</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+      <a class="proyecto" href="cases/auditoria-rendimiento-dax.html">
+        <span class="herr">DAX · Performance Analyzer</span>
+        <h3>Auditoría de rendimiento DAX</h3>
+        <p>Un ranking lento, analizado con el Performance Analyzer y reescrito con RANKX y ALLSELECTED. De más de 8 s a menos de 1 s.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <a class="case-row" href="cases/campanas-marketing.html" style="--tick:#C81E3A">
-        <span class="ticker">MK</span>
-        <div class="case-main">
-          <h3>Panel de Marketing — Rendimiento de Campañas</h3>
-          <p>Diseño tipo plantilla (menú lateral, KPIs grandes, filtros en un panel aparte) en lugar del informe estándar. Medidas con AVERAGEX y SWITCH.</p>
-          <div class="case-tags"><span>Power BI</span><span>DAX</span><span>Diseño de plantilla</span></div>
-        </div>
-        <span class="case-cta">Ver proyecto →</span>
+      <a class="proyecto" href="cases/campanas-marketing.html">
+        <span class="herr">Power BI · Diseño</span>
+        <h3>Rendimiento de campañas de marketing</h3>
+        <p>Diseño tipo plantilla, con menú lateral, KPIs grandes y filtros en un panel aparte. Medidas con AVERAGEX y SWITCH.</p>
+        <span class="ver">Ver proyecto</span>
       </a>
 
-      <div class="case-row" style="--tick:#2F4E9E">
-        <span class="ticker">RT</span>
-        <div class="case-main">
-          <h3>Analítica de Stock y Demanda (Retail)</h3>
-          <p>Rotación de stock, riesgo de rotura por categoría y precisión de la previsión, con el ETL que lo alimenta.</p>
-          <div class="case-tags"><span>Power BI</span><span>ETL</span></div>
-          <div class="thumb-wrap"><img src="images/dashboard-retail.png" alt="Dashboard de analítica de stock y demanda"></div>
-        </div>
-        <span class="case-cta">Imagen</span>
+      <div class="proyecto">
+        <span class="herr">Power BI · ETL</span>
+        <h3>Analítica de stock y demanda</h3>
+        <p>Rotación de stock, riesgo de rotura por categoría y precisión de la previsión, con el ETL que lo alimenta.</p>
+        <img src="images/dashboard-retail.png" alt="Dashboard de analítica de stock y demanda">
       </div>
 
-      <div class="case-row" style="--tick:#2F4E9E">
-        <span class="ticker">PL</span>
-        <div class="case-main">
-          <h3>Pipeline de Datos con Puerta de Calidad</h3>
-          <p>De los sistemas origen al warehouse: carga incremental, staging, validación y reintentos cuando algo falla.</p>
-          <div class="case-tags"><span>Arquitectura</span><span>Calidad de datos</span></div>
-          <div class="thumb-wrap"><img src="images/pipeline-datos.png" alt="Diagrama de arquitectura de pipeline de datos"></div>
-        </div>
-        <span class="case-cta">Imagen</span>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-intro">
-      <div class="section-head"><span class="num">02</span><h2>Habilidades</h2></div>
-    </div>
-    <div class="skills-grid">
-      <div class="skills-col">
-        <h4>Bases de Datos &amp; Cloud</h4>
-        <div>SQL avanzado: CTEs, JOINs, optimización</div>
-        <div>SQL Server</div>
-        <div>AWS Redshift</div>
-        <div>Google BigQuery</div>
-      </div>
-      <div class="skills-col">
-        <h4>BI, Visualización &amp; ETL</h4>
-        <div>Power BI: DAX, Power Query</div>
-        <div>Tableau</div>
-        <div>Qlik Sense</div>
-        <div>Python: ETL, automatización</div>
+      <div class="proyecto">
+        <span class="herr">Arquitectura · Calidad de datos</span>
+        <h3>Pipeline de datos con control de calidad</h3>
+        <p>De los sistemas origen al warehouse: carga incremental, staging, validación y reintentos cuando algo falla.</p>
+        <img src="images/pipeline-datos.png" alt="Diagrama de arquitectura de un pipeline de datos">
       </div>
     </div>
   </div>
+</section>
 
-  <footer>Todos los casos usan datos sintéticos.</footer>
+<div class="wrap">
+  <section class="habilidades" id="habilidades">
+    <div>
+      <h3>Bases de datos</h3>
+      <ul><li>SQL avanzado: CTEs, JOINs, funciones de ventana</li><li>PostgreSQL y SQL Server</li><li>AWS Redshift y Google BigQuery</li><li>Optimización con índices y planes de ejecución</li></ul>
+    </div>
+    <div>
+      <h3>BI y visualización</h3>
+      <ul><li>Power BI: DAX, Power Query, modelado</li><li>Tableau</li><li>Qlik Sense</li></ul>
+    </div>
+    <div>
+      <h3>ETL y automatización</h3>
+      <ul><li>Python: pandas, requests, psycopg</li><li>Validación y control de calidad del dato</li><li>VBA</li></ul>
+    </div>
+  </section>
 
+  <footer class="pie">
+    <span>Rodrigo Pinheiro Berto · Data Analyst / BI · Madrid</span>
+    <a href="mailto:rodrigoberto2@gmail.com">rodrigoberto2@gmail.com</a>
+  </footer>
 </div>
 
 </body>
