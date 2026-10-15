@@ -158,3 +158,8 @@ table.comparar td.num{ font-weight:800; font-variant-numeric:tabular-nums; white
   .pasos{ grid-template-columns:1fr; }
   .pasos li + li{ padding-left:0; border-left:none; border-top:1px solid var(--line); }
 }
+
+/* capturas plegadas */
+details.planes{ margin-top:16px; }
+details.planes summary{ cursor:pointer; font-weight:700; font-size:14px; text-decoration:underline; text-underline-offset:4px; }
+details.planes[open] summary{ margin-bottom:4px; }

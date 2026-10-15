@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cuadro de mando de cartera de proyectos · Rodrigo Pinheiro Berto</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="../assets/estilo.css?v=4">
+<link rel="stylesheet" href="../assets/estilo.css?v=5">
 </head>
 <body>
 <div class="wrap">
@@ -110,10 +110,13 @@ h <span class="kw">AS</span> (
 <span class="kw">CREATE INDEX</span> ix_imputaciones_proyecto_fecha
     <span class="kw">ON</span> imputaciones (proyecto_id, fecha)
     <span class="kw">INCLUDE</span> (perfil, horas, coste);</pre>
-    <div class="shots">
+    <details class="planes">
+      <summary>Ver los planes de ejecución en pgAdmin</summary>
+      <div class="shots">
       <figure><img src="../images/cartera/plan-sin-indice.png" alt="Plan en pgAdmin sin índice: Parallel Seq Scan, Execution Time 75,406 ms" loading="lazy"><figcaption>Plan real en pgAdmin · sin índice</figcaption></figure>
       <figure><img src="../images/cartera/plan-con-indice.png" alt="Plan en pgAdmin con índice: Index Only Scan, Execution Time 2,132 ms" loading="lazy"><figcaption>Plan real en pgAdmin · con índice</figcaption></figure>
-    </div>
+      </div>
+    </details>
   </div>
 
   </section>
